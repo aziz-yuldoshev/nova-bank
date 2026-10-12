@@ -1,0 +1,792 @@
+
+{% extends "nova_bank/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Valyuta ayirboshlash" %} — NOVA BANK{% endblock %}
+
+{% block content %}
+
+<style>
+    .exchange-page {
+        padding: 45px 0 80px;
+    }
+
+    .exchange-hero {
+        background:
+            radial-gradient(circle at 80% 20%, rgba(45, 140, 255, 0.20), transparent 35%),
+            linear-gradient(135deg, #0b1220, #080d16);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 28px;
+        padding: 35px;
+        margin-bottom: 28px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .exchange-hero::after {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        right: -80px;
+        bottom: -100px;
+        background: rgba(55, 145, 255, 0.12);
+        border-radius: 50%;
+        filter: blur(5px);
+    }
+
+    .hero-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 30px;
+        background: rgba(55, 145, 255, 0.12);
+        color: #69b3ff;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .exchange-hero h1 {
+        font-size: 36px;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .exchange-hero p {
+        color: #9ba8ba;
+        margin: 0;
+        max-width: 650px;
+    }
+
+    .exchange-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.6fr) minmax(300px, 0.8fr);
+        gap: 25px;
+    }
+
+    .exchange-card,
+    .rates-card {
+        background: #0b111c;
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 24px;
+        padding: 28px;
+    }
+
+    .card-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 21px;
+        font-weight: 750;
+        margin-bottom: 25px;
+    }
+
+    .card-title-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(52, 143, 255, 0.12);
+        color: #55aaff;
+        font-size: 20px;
+    }
+
+    .currency-box {
+        background: #080e18;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 18px;
+        padding: 18px;
+        margin-bottom: 12px;
+    }
+
+    .currency-label {
+        color: #8794a8;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-bottom: 9px;
+    }
+
+    .currency-row {
+        display: grid;
+        grid-template-columns: 1fr 150px;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .currency-select,
+    .amount-input {
+        width: 100%;
+        background: #101827;
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 13px;
+        padding: 13px 15px;
+        outline: none;
+    }
+
+    .currency-select:focus,
+    .amount-input:focus {
+        border-color: rgba(75, 166, 255, 0.7);
+        box-shadow: 0 0 0 3px rgba(75, 166, 255, 0.08);
+    }
+
+    .amount-input {
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+    .currency-select {
+        font-weight: 700;
+    }
+
+    .currency-select option {
+        background: #101827;
+        color: #fff;
+    }
+
+    .swap-wrapper {
+        display: flex;
+        justify-content: center;
+        margin: -2px 0 8px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .swap-btn {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 1px solid rgba(75, 166, 255, 0.35);
+        background: #111b2b;
+        color: #60b1ff;
+        font-size: 19px;
+        cursor: pointer;
+        transition: 0.25s ease;
+    }
+
+    .swap-btn:hover {
+        transform: rotate(180deg);
+        background: #16253a;
+    }
+
+    .exchange-submit {
+        width: 100%;
+        border: none;
+        border-radius: 14px;
+        padding: 15px;
+        margin-top: 12px;
+        background: linear-gradient(135deg, #2789ff, #1765d1);
+        color: #fff;
+        font-weight: 800;
+        font-size: 15px;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .exchange-submit:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 30px rgba(39, 137, 255, 0.18);
+    }
+
+    .info-box {
+        margin-top: 18px;
+        padding: 15px 17px;
+        border-radius: 15px;
+        background: rgba(52, 143, 255, 0.07);
+        border: 1px solid rgba(52, 143, 255, 0.12);
+        color: #91a4bb;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .info-box i {
+        color: #5caeff;
+        margin-right: 6px;
+    }
+
+    .rate-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .rate-item:last-child {
+        border-bottom: none;
+    }
+
+    .rate-left {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+    }
+
+    .currency-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #111b2a;
+        font-size: 17px;
+    }
+
+    .rate-name {
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .rate-code {
+        color: #718096;
+        font-size: 11px;
+        margin-top: 2px;
+    }
+
+    .rate-value {
+        text-align: right;
+        font-weight: 800;
+        color: #dce7f5;
+    }
+
+    .rate-unit {
+        display: block;
+        color: #718096;
+        font-size: 10px;
+        font-weight: 500;
+        margin-top: 2px;
+    }
+
+    .feature-list {
+        margin-top: 25px;
+        display: grid;
+        gap: 12px;
+    }
+
+    .feature {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        color: #9ba8ba;
+        font-size: 13px;
+    }
+
+    .feature-icon {
+        color: #55aaff;
+        font-size: 16px;
+        margin-top: 1px;
+    }
+
+    @media (max-width: 900px) {
+        .exchange-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .exchange-page {
+            padding-top: 25px;
+        }
+
+        .exchange-hero {
+            padding: 25px;
+            border-radius: 22px;
+        }
+
+        .exchange-hero h1 {
+            font-size: 28px;
+        }
+
+        .exchange-card,
+        .rates-card {
+            padding: 20px;
+        }
+
+        .currency-row {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+
+<div class="container exchange-page">
+
+    <!-- HERO -->
+    <div class="exchange-hero">
+
+        <div class="hero-label">
+            <i class="bi bi-arrow-left-right"></i>
+            NOVA EXCHANGE
+        </div>
+
+        <h1>{% trans "Valyuta ayirboshlash" %}</h1>
+
+        <p>
+            {% trans "USD, EUR, RUB va UZS valyutalarini tez va qulay tarzda ayirboshlang." %}
+        </p>
+
+    </div>
+
+
+    <div class="exchange-grid">
+
+        <!-- EXCHANGE FORM -->
+        <div class="exchange-card">
+
+            <div class="card-title">
+
+                <div class="card-title-icon">
+                    <i class="bi bi-currency-exchange"></i>
+                </div>
+
+                {% trans "Ayirboshlash" %}
+
+            </div>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <!-- FROM -->
+
+                <div class="currency-box">
+
+                    <div class="currency-label">
+                        {% trans "Sizda" %}
+                    </div>
+
+                    <div class="currency-row">
+
+                        <select
+                            name="from_currency"
+                            class="currency-select"
+                            required
+                        >
+
+                            {% for code, name in currencies.items %}
+
+                                <option value="{{ code }}"
+                                    {% if code == "USD" %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ code }} — {{ name }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+
+                        <input
+                            type="number"
+                            name="amount"
+                            class="amount-input"
+                            placeholder="0.00"
+                            step="0.01"
+                            min="0.01"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- SWAP -->
+
+                <div class="swap-wrapper">
+
+                    <button
+                        type="button"
+                        class="swap-btn"
+                        id="swapCurrencies"
+                        title="{% trans 'Valyutalarni almashtirish' %}"
+                    >
+                        <i class="bi bi-arrow-down-up"></i>
+                    </button>
+
+                </div>
+
+
+                <!-- TO -->
+
+                <div class="currency-box">
+
+                    <div class="currency-label">
+                        {% trans "Siz olasiz" %}
+                    </div>
+
+                    <div class="currency-row">
+
+                        <select
+                            name="to_currency"
+                            class="currency-select"
+                            required
+                        >
+
+                            {% for code, name in currencies.items %}
+
+                                <option value="{{ code }}"
+                                    {% if code == "UZS" %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ code }} — {{ name }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+
+                        <div
+                            class="amount-input"
+                            id="resultAmount"
+                            style="
+                                display:flex;
+                                align-items:center;
+                                min-height:49px;
+                            "
+                        >
+                            0.00
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="exchange-submit"
+                >
+                    <i class="bi bi-arrow-left-right me-2"></i>
+                    {% trans "Ayirboshlash" %}
+                </button>
+
+
+                <div class="info-box">
+
+                    <i class="bi bi-info-circle-fill"></i>
+
+                    {% trans "Kurslar demo tizim uchun belgilangan. Ayirboshlash amalga oshirilganda operatsiya transaction tarixiga yoziladi." %}
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- RATES -->
+
+        <div class="rates-card">
+
+            <div class="card-title">
+
+                <div class="card-title-icon">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+
+                {% trans "Valyuta kurslari" %}
+
+            </div>
+
+
+            <div class="rate-item">
+
+                <div class="rate-left">
+
+                    <div class="currency-icon">
+                        🇺🇸
+                    </div>
+
+                    <div>
+
+                        <div class="rate-name">
+                            {% trans "US Dollar" %}
+                        </div>
+
+                        <div class="rate-code">
+                            USD
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="rate-value">
+                    12,000
+                    <span class="rate-unit">
+                        UZS
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="rate-item">
+
+                <div class="rate-left">
+
+                    <div class="currency-icon">
+                        🇪🇺
+                    </div>
+
+                    <div>
+
+                        <div class="rate-name">
+                            {% trans "Euro" %}
+                        </div>
+
+                        <div class="rate-code">
+                            EUR
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="rate-value">
+                    13,000
+                    <span class="rate-unit">
+                        UZS
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="rate-item">
+
+                <div class="rate-left">
+
+                    <div class="currency-icon">
+                        🇷🇺
+                    </div>
+
+                    <div>
+
+                        <div class="rate-name">
+                            {% trans "Russian Ruble" %}
+                        </div>
+
+                        <div class="rate-code">
+                            RUB
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="rate-value">
+                    130
+                    <span class="rate-unit">
+                        UZS
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="rate-item">
+
+                <div class="rate-left">
+
+                    <div class="currency-icon">
+                        🇺🇿
+                    </div>
+
+                    <div>
+
+                        <div class="rate-name">
+                            {% trans "Uzbek Som" %}
+                        </div>
+
+                        <div class="rate-code">
+                            UZS
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="rate-value">
+                    1
+                    <span class="rate-unit">
+                        UZS
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="feature-list">
+
+                <div class="feature">
+
+                    <i class="bi bi-check-circle-fill feature-icon"></i>
+
+                    <span>
+                        {% trans "USD, EUR, RUB va UZS qo‘llab-quvvatlanadi." %}
+                    </span>
+
+                </div>
+
+                <div class="feature">
+
+                    <i class="bi bi-check-circle-fill feature-icon"></i>
+
+                    <span>
+                        {% trans "Ayirboshlash operatsiyalari tarixda saqlanadi." %}
+                    </span>
+
+                </div>
+
+                <div class="feature">
+
+                    <i class="bi bi-check-circle-fill feature-icon"></i>
+
+                    <span>
+                        {% trans "Valyutalarni bir-biriga tez almashtirish mumkin." %}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const fromCurrency = document.querySelector(
+        'select[name="from_currency"]'
+    );
+
+    const toCurrency = document.querySelector(
+        'select[name="to_currency"]'
+    );
+
+    const amountInput = document.querySelector(
+        'input[name="amount"]'
+    );
+
+    const resultAmount = document.getElementById(
+        "resultAmount"
+    );
+
+    const swapButton = document.getElementById(
+        "swapCurrencies"
+    );
+
+
+    const rates = {
+
+        USD: 12000,
+
+        EUR: 13000,
+
+        RUB: 130,
+
+        UZS: 1
+
+    };
+
+
+    function calculateExchange() {
+
+        const amount = parseFloat(
+            amountInput.value
+        );
+
+        const from = fromCurrency.value;
+        const to = toCurrency.value;
+
+
+        if (
+            !amount ||
+            amount <= 0 ||
+            from === to
+        ) {
+
+            resultAmount.textContent = "0.00";
+
+            return;
+        }
+
+
+        const amountInUzs =
+            amount * rates[from];
+
+
+        const result =
+            amountInUzs / rates[to];
+
+
+        resultAmount.textContent =
+            result.toLocaleString(
+                "en-US",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            );
+
+    }
+
+
+    amountInput.addEventListener(
+        "input",
+        calculateExchange
+    );
+
+
+    fromCurrency.addEventListener(
+        "change",
+        calculateExchange
+    );
+
+
+    toCurrency.addEventListener(
+        "change",
+        calculateExchange
+    );
+
+
+    swapButton.addEventListener(
+        "click",
+        function () {
+
+            const oldFrom =
+                fromCurrency.value;
+
+            fromCurrency.value =
+                toCurrency.value;
+
+            toCurrency.value =
+                oldFrom;
+
+            calculateExchange();
+
+        }
+    );
+
+</script>
+
+{% endblock %}
+

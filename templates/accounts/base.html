@@ -1,0 +1,1666 @@
+{% load static i18n %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+            name="theme-color"
+            content="#070b14"
+    >
+
+    <title>
+        {% block title %}NOVA BANK{% endblock %}
+    </title>
+
+
+    <!-- ================= BOOTSTRAP ================= -->
+
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    >
+
+
+    <!-- ================= BOOTSTRAP ICONS ================= -->
+
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+
+    <!-- ================= GOOGLE FONT ================= -->
+
+    <link
+            rel="preconnect"
+            href="https://fonts.googleapis.com"
+    >
+
+    <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossorigin
+    >
+
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet"
+    >
+
+
+    <!-- ================= MAIN CSS ================= -->
+
+    <link
+            rel="stylesheet"
+            href="{% static 'css/style.css' %}"
+    >
+
+
+    <!-- ================= NAVBAR STYLE ================= -->
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: #070b14;
+            color: #ffffff;
+        }
+
+
+        /* =========================================
+           NAVBAR
+        ========================================= */
+
+        .nova-navbar {
+
+            min-height: 76px;
+
+            background:
+                rgba(7, 11, 20, 0.94);
+
+            border-bottom:
+                1px solid rgba(255, 255, 255, 0.07);
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 9999;
+        }
+
+
+        .nova-navbar .container {
+            min-height: 76px;
+        }
+
+
+        /* =========================================
+           LOGO
+        ========================================= */
+
+        .nova-logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: #ffffff !important;
+
+            font-size: 21px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+
+            text-decoration: none;
+
+            transition: 0.25s ease;
+        }
+
+
+        .nova-logo:hover {
+            transform: translateY(-1px);
+        }
+
+
+        .logo-icon {
+
+            width: 40px;
+
+            height: 40px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #247cff,
+                    #0057d9
+                );
+
+            color: #ffffff;
+
+            box-shadow:
+                0 8px 25px rgba(36, 124, 255, 0.28);
+
+            font-size: 19px;
+        }
+
+
+        .logo-bank {
+            color: #4d9cff;
+        }
+
+
+        /* =========================================
+           NAV LINKS
+        ========================================= */
+
+        .nova-navbar .navbar-nav {
+
+            gap: 5px;
+        }
+
+
+        .nova-navbar .nav-link {
+
+            color:
+                rgba(255, 255, 255, 0.62);
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            padding:
+                10px 13px !important;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            transition:
+                color 0.25s ease,
+                background 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        .nova-navbar .nav-link:hover {
+
+            color: #ffffff;
+
+            background:
+                rgba(255, 255, 255, 0.06);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .nova-navbar .nav-link i {
+
+            color: #4d9cff;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           NAVBAR ACTIONS
+        ========================================= */
+
+        .navbar-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        /* =========================================
+           LOGIN BUTTON
+        ========================================= */
+
+        .btn-login {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            min-height: 42px;
+
+            padding:
+                0 18px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.12);
+
+            border-radius: 11px;
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            background:
+                rgba(255, 255, 255, 0.04);
+
+            transition: 0.25s ease;
+        }
+
+
+        .btn-login:hover {
+
+            color: #ffffff;
+
+            background:
+                rgba(255, 255, 255, 0.09);
+
+            border-color:
+                rgba(255, 255, 255, 0.20);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        /* =========================================
+           REGISTER BUTTON
+        ========================================= */
+
+        .btn-register {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            min-height: 42px;
+
+            padding:
+                0 18px;
+
+            border-radius: 11px;
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2681ff,
+                    #075bd6
+                );
+
+            box-shadow:
+                0 8px 24px
+                rgba(38, 129, 255, 0.20);
+
+            transition: 0.25s ease;
+        }
+
+
+        .btn-register:hover {
+
+            color: #ffffff;
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(38, 129, 255, 0.30);
+        }
+
+
+        /* =========================================
+           USER PROFILE
+        ========================================= */
+
+        .nova-profile-btn {
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.09);
+
+            background:
+                rgba(255, 255, 255, 0.045);
+
+            color: #ffffff;
+
+            border-radius: 12px;
+
+            padding:
+                5px 9px 5px 6px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            transition: 0.25s ease;
+        }
+
+
+        .nova-profile-btn:hover,
+        .nova-profile-btn:focus {
+
+            color: #ffffff;
+
+            background:
+                rgba(255, 255, 255, 0.08);
+
+            border-color:
+                rgba(77, 156, 255, 0.25);
+
+            box-shadow: none;
+        }
+
+
+        .nova-profile-avatar {
+
+            width: 34px;
+
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2784ff,
+                    #0758cf
+                );
+
+            color: #ffffff;
+
+            font-size: 16px;
+
+            box-shadow:
+                0 5px 16px
+                rgba(39, 132, 255, 0.25);
+        }
+
+
+        .nova-profile-info {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: flex-start;
+
+            line-height: 1.1;
+        }
+
+
+        .nova-profile-name {
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            color: #ffffff;
+        }
+
+
+        .nova-profile-label {
+
+            margin-top: 3px;
+
+            font-size: 10px;
+
+            color:
+                rgba(255, 255, 255, 0.45);
+        }
+
+
+        .nova-profile-arrow {
+
+            font-size: 11px;
+
+            color:
+                rgba(255, 255, 255, 0.45);
+        }
+
+
+        /* =========================================
+           DROPDOWN
+        ========================================= */
+
+        .nova-dropdown {
+
+            min-width: 220px;
+
+            margin-top: 12px !important;
+
+            padding: 8px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.09);
+
+            border-radius: 15px;
+
+            background:
+                #101621;
+
+            box-shadow:
+                0 20px 50px
+                rgba(0, 0, 0, 0.45);
+
+            backdrop-filter:
+                blur(20px);
+        }
+
+
+        .nova-dropdown .dropdown-header {
+
+            padding:
+                10px 11px 8px;
+
+            color:
+                rgba(255, 255, 255, 0.42);
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.8px;
+        }
+
+
+        .nova-dropdown .dropdown-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            padding:
+                11px;
+
+            border-radius: 10px;
+
+            color:
+                rgba(255, 255, 255, 0.72);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+
+        .nova-dropdown .dropdown-item:hover {
+
+            color: #ffffff;
+
+            background:
+                rgba(255, 255, 255, 0.06);
+        }
+
+
+        .nova-dropdown .dropdown-item i {
+
+            width: 20px;
+
+            color: #4d9cff;
+
+            font-size: 15px;
+
+            text-align: center;
+        }
+
+
+        .nova-dropdown .dropdown-item.logout-item {
+
+            color: #ff7373;
+        }
+
+
+        .nova-dropdown
+        .dropdown-item.logout-item i {
+
+            color: #ff7373;
+        }
+
+
+        .nova-dropdown
+        .dropdown-item.logout-item:hover {
+
+            background:
+                rgba(255, 82, 82, 0.08);
+
+            color: #ff8585;
+        }
+
+
+        .nova-dropdown hr {
+
+            margin:
+                6px 4px;
+
+            border-color:
+                rgba(255, 255, 255, 0.07);
+        }
+
+
+        /* =========================================
+           MOBILE MENU
+        ========================================= */
+
+        .navbar-toggler {
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.12);
+
+            border-radius: 10px;
+
+            color: #ffffff;
+
+            padding:
+                7px 10px;
+        }
+
+
+        .navbar-toggler:focus {
+
+            box-shadow:
+                0 0 0 3px
+                rgba(38, 129, 255, 0.12);
+        }
+
+
+        .navbar-toggler i {
+
+            font-size: 21px;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        .nova-footer {
+
+            margin-top: 80px;
+
+            padding:
+                55px 0 25px;
+
+            background:
+                #060a12;
+
+            border-top:
+                1px solid
+                rgba(255, 255, 255, 0.06);
+        }
+
+
+        .footer-logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            font-size: 20px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .footer-logo i {
+
+            color: #4d9cff;
+        }
+
+
+        .footer-logo span {
+
+            color: #4d9cff;
+        }
+
+
+        .nova-footer p {
+
+            color:
+                rgba(255, 255, 255, 0.48);
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        .nova-footer h5 {
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 17px;
+        }
+
+
+        .nova-footer a {
+
+            display: block;
+
+            width: fit-content;
+
+            margin-bottom: 10px;
+
+            color:
+                rgba(255, 255, 255, 0.48);
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            transition: 0.2s ease;
+        }
+
+
+        .nova-footer a:hover {
+
+            color: #4d9cff;
+
+            transform:
+                translateX(2px);
+        }
+
+
+        .footer-contact {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+        }
+
+
+        .footer-contact i {
+
+            color: #4d9cff;
+        }
+
+
+        .nova-footer hr {
+
+            margin:
+                35px 0 20px;
+
+            border-color:
+                rgba(255, 255, 255, 0.07);
+        }
+
+
+        .footer-bottom {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+
+        .footer-bottom span {
+
+            color:
+                rgba(255, 255, 255, 0.35);
+
+            font-size: 11px;
+        }
+
+
+        .footer-social {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+
+        .footer-social a {
+
+            width: 34px;
+
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.08);
+
+            border-radius: 9px;
+
+            margin: 0;
+
+            color:
+                rgba(255, 255, 255, 0.55);
+
+            transition: 0.2s ease;
+        }
+
+
+        .footer-social a:hover {
+
+            color: #ffffff;
+
+            background:
+                rgba(77, 156, 255, 0.10);
+
+            border-color:
+                rgba(77, 156, 255, 0.25);
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 1199px) {
+
+            .nova-navbar .nav-link {
+
+                padding-left: 9px !important;
+
+                padding-right: 9px !important;
+
+                font-size: 12px;
+            }
+
+        }
+
+
+        @media (max-width: 991px) {
+
+            .nova-navbar {
+
+                min-height: 70px;
+            }
+
+
+            .nova-navbar .container {
+
+                min-height: 70px;
+            }
+
+
+            .nova-navbar .navbar-collapse {
+
+                margin-top: 14px;
+
+                padding:
+                    12px;
+
+                border:
+                    1px solid
+                    rgba(255, 255, 255, 0.07);
+
+                border-radius: 15px;
+
+                background:
+                    rgba(13, 18, 29, 0.98);
+            }
+
+
+            .nova-navbar .navbar-nav {
+
+                gap: 3px;
+            }
+
+
+            .nova-navbar .nav-link {
+
+                padding:
+                    11px 13px !important;
+            }
+
+
+            .navbar-actions {
+
+                margin-top: 12px;
+
+                padding-top: 12px;
+
+                border-top:
+                    1px solid
+                    rgba(255, 255, 255, 0.07);
+
+                justify-content: flex-start;
+            }
+
+
+            .nova-profile-btn {
+
+                width: 100%;
+
+                justify-content: flex-start;
+            }
+
+        }
+
+
+        @media (max-width: 576px) {
+
+            .nova-logo {
+
+                font-size: 18px;
+            }
+
+
+            .logo-icon {
+
+                width: 36px;
+
+                height: 36px;
+            }
+
+
+            .footer-bottom {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+
+    {% block extra_css %}{% endblock %}
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-expand-lg nova-navbar">
+
+    <div class="container">
+
+
+        <!-- ================= LOGO ================= -->
+
+        <a
+                class="navbar-brand nova-logo"
+                href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}/{% endif %}"
+        >
+
+            <span class="logo-icon">
+
+                <i class="bi bi-bank2"></i>
+
+            </span>
+
+
+            <span>
+
+                NOVA<span class="logo-bank">BANK</span>
+
+            </span>
+
+        </a>
+
+
+        <!-- ================= MOBILE BUTTON ================= -->
+
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#novaNavbar"
+                aria-controls="novaNavbar"
+                aria-expanded="false"
+                aria-label="Menu"
+        >
+
+            <i class="bi bi-list"></i>
+
+        </button>
+
+
+        <!-- ================= NAVIGATION ================= -->
+
+        <div
+                class="collapse navbar-collapse"
+                id="novaNavbar"
+        >
+
+
+            {% if user.is_authenticated %}
+
+
+            <!-- ================= USER NAVIGATION ================= -->
+
+            <ul class="navbar-nav mx-auto">
+
+
+                <!-- Dashboard -->
+
+                <li class="nav-item">
+
+                    <a
+                            class="nav-link"
+                            href="{% url 'dashboard' %}"
+                    >
+
+                        <i class="bi bi-grid-1x2-fill me-1"></i>
+
+                        Dashboard
+
+                    </a>
+
+                </li>
+
+
+                <!-- Cards -->
+
+                <li class="nav-item">
+
+                    <a
+                            class="nav-link"
+                            href="{% url 'cards' %}"
+                    >
+
+                        <i class="bi bi-credit-card-2-front-fill me-1"></i>
+
+                        Kartalar
+
+                    </a>
+
+                </li>
+
+
+                <!-- Transfer -->
+
+                <li class="nav-item">
+
+                    <a
+                            class="nav-link"
+                            href="{% url 'transfer' %}"
+                    >
+
+                        <i class="bi bi-arrow-left-right me-1"></i>
+
+                        Transfer
+
+                    </a>
+
+                </li>
+
+
+                <!-- Analytics -->
+
+                <li class="nav-item">
+
+                    <a
+                            class="nav-link"
+                            href="{% url 'analytics' %}"
+                    >
+
+                        <i class="bi bi-bar-chart-fill me-1"></i>
+
+                        Analytics
+
+                    </a>
+
+                </li>
+
+
+                <!-- Credit -->
+
+                <li class="nav-item">
+
+                    <a
+                            class="nav-link"
+                            href="{% url 'loans' %}"
+                    >
+                        <i class="bi bi-cash-stack me-1"></i>
+                        Kreditlar
+                    </a>
+
+                </li>
+
+
+                <!-- Deposit -->
+
+                <!-- Deposit -->
+
+                <li class="nav-item">
+
+                    <a
+                            class="nav-link"
+                            href="{% url 'deposits' %}"
+                    >
+
+                        <i class="bi bi-safe2-fill me-1"></i>
+
+                        Depozitlar
+
+                    </a>
+
+                </li>
+
+
+            </ul>
+
+
+            <!-- ================= PROFILE ================= -->
+
+            <div class="navbar-actions">
+
+                <div class="dropdown me-2">
+                    {% get_current_language as CURRENT_LANGUAGE %}
+
+                    <button class="btn btn-outline-light dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        🌐 {{ CURRENT_LANGUAGE|upper }}
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+                        <li>
+                            <form action="{% url 'set_language' %}" method="post" class="m-0">
+                                {% csrf_token %}
+                                <input type="hidden" name="language" value="uz">
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+
+                                <button type="submit" class="dropdown-item">
+                                    🇺🇿 O‘zbekcha
+                                </button>
+                            </form>
+                        </li>
+
+                        <li>
+                            <form action="{% url 'set_language' %}" method="post" class="m-0">
+                                {% csrf_token %}
+                                <input type="hidden" name="language" value="ru">
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+
+                                <button type="submit" class="dropdown-item">
+                                    🇷🇺 Русский
+                                </button>
+                            </form>
+                        </li>
+
+                        <li>
+                            <form action="{% url 'set_language' %}" method="post" class="m-0">
+                                {% csrf_token %}
+                                <input type="hidden" name="language" value="en">
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+
+                                <button type="submit" class="dropdown-item">
+                                    🇬🇧 English
+                                </button>
+                            </form>
+                        </li>
+
+                    </ul>
+                </div>
+
+
+                <div class="dropdown">
+
+
+                    <button
+                            class="btn nova-profile-btn dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                    >
+
+
+                        <span class="nova-profile-avatar">
+
+                            <i class="bi bi-person-fill"></i>
+
+                        </span>
+
+
+                        <span class="nova-profile-info">
+
+                            <span class="nova-profile-name">
+
+                                {{ user.username }}
+
+                            </span>
+
+
+                            <span class="nova-profile-label">
+
+                                NOVA BANK
+
+                            </span>
+
+                        </span>
+
+
+                        <i class="bi bi-chevron-down nova-profile-arrow"></i>
+
+
+                    </button>
+
+
+                    <!-- ================= DROPDOWN ================= -->
+
+                    <ul class="dropdown-menu dropdown-menu-end nova-dropdown">
+
+
+                        <li>
+
+                            <div class="dropdown-header">
+
+                                Hisob
+
+                            </div>
+
+                        </li>
+
+
+                        <!-- Dashboard -->
+
+                        <li>
+
+                            <a
+                                    class="dropdown-item"
+                                    href="{% url 'dashboard' %}"
+                            >
+
+                                <i class="bi bi-grid-1x2-fill"></i>
+
+                                Dashboard
+
+                            </a>
+
+                        </li>
+
+
+                        <!-- Analytics -->
+
+                        <li>
+
+                            <a
+                                    class="dropdown-item"
+                                    href="{% url 'analytics' %}"
+                            >
+
+                                <i class="bi bi-bar-chart-fill"></i>
+
+                                Analytics
+
+                            </a>
+
+                        </li>
+
+
+                        <!-- Admin -->
+
+                        <li>
+
+                            <a
+                                    class="dropdown-item"
+                                    href="/admin/"
+                                    target="_blank"
+                            >
+
+                                <i class="bi bi-shield-lock-fill"></i>
+
+                                Admin panel
+
+                            </a>
+
+                        </li>
+
+
+                        <li>
+                            <hr>
+                        </li>
+
+
+                        <!-- Logout -->
+
+                        <li>
+
+                            <a
+                                    class="dropdown-item logout-item"
+                                    href="{% url 'logout' %}"
+                            >
+
+                                <i class="bi bi-box-arrow-right"></i>
+
+                                Hisobdan chiqish
+
+                            </a>
+
+                        </li>
+
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- ================= GUEST NAVIGATION ================= -->
+
+            <ul class="navbar-nav mx-auto">
+
+
+                <li class="nav-item">
+
+                    <a
+                            class="nav-link"
+                            href="/"
+                    >
+
+                        <i class="bi bi-house-fill me-1"></i>
+
+                        Bosh sahifa
+
+                    </a>
+
+                </li>
+
+
+                <li class="nav-item">
+
+                    <a
+                            class="nav-link"
+                            href="#"
+                    >
+
+                        <i class="bi bi-credit-card-2-front-fill me-1"></i>
+
+                        Kartalar
+
+                    </a>
+
+                </li>
+
+
+                <li class="nav-item">
+
+                <li class="nav-item">
+                    <a
+                            class="nav-link"
+                            href="{% url 'loans' %}"
+                    >
+                        <i class="bi bi-cash-stack me-1"></i>
+                        Kreditlar
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+
+                    <a href="{% url 'deposits' %}" class="nav-link">
+                        <i class="bi bi-piggy-bank me-1"></i>
+                        Depozitlar
+                    </a>
+
+                </li>
+
+
+                <li class="nav-item">
+
+                    <a
+                            class="nav-link"
+                            href="#"
+                    >
+
+                        <i class="bi bi-info-circle-fill me-1"></i>
+
+                        Biz haqimizda
+
+                    </a>
+
+                </li>
+
+
+            </ul>
+
+
+            <!-- ================= GUEST ACTIONS ================= -->
+
+            <div class="navbar-actions">
+
+
+                <a
+                        href="{% url 'login' %}"
+                        class="btn-login"
+                >
+
+                    <i class="bi bi-box-arrow-in-right"></i>
+
+                    Kirish
+
+                </a>
+
+
+                <a
+                        href="{% url 'register' %}"
+                        class="btn-register"
+                >
+
+                    <i class="bi bi-person-plus-fill"></i>
+
+                    Hisob ochish
+
+                </a>
+
+
+            </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main>
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="nova-footer">
+
+    <div class="container">
+
+        <div class="row g-4">
+
+
+            <!-- ABOUT -->
+
+            <div class="col-lg-5">
+
+                <div class="footer-logo">
+
+                    <i class="bi bi-bank2"></i>
+
+                    NOVA<span>BANK</span>
+
+                </div>
+
+
+                <p>
+
+                    Zamonaviy banking — sizning moliyaviy
+                    kelajagingiz uchun yangi imkoniyatlar.
+
+                </p>
+
+            </div>
+
+
+            <!-- BANK -->
+
+            <div class="col-6 col-lg-2">
+
+                <h5>Bank</h5>
+
+
+                <a href="{% url 'dashboard' %}">
+                    Dashboard
+                </a>
+
+
+                <a href="{% url 'cards' %}">
+                    Kartalar
+                </a>
+
+
+                <a href="{% url 'transfer' %}">
+                    Transfer
+                </a>
+
+
+                <a href="{% url 'analytics' %}">
+                    Analytics
+                </a>
+
+            </div>
+
+
+            <!-- SERVICES -->
+
+            <div class="col-6 col-lg-2">
+
+                <h5>Xizmatlar</h5>
+
+
+                <a href="{% url 'loans' %}">Kreditlar</a>
+
+
+                <a href="#">
+                    Depozitlar
+                </a>
+
+
+                <a href="#">
+                    FAQ
+                </a>
+
+
+                <a href="#">
+                    Qo‘llab-quvvatlash
+                </a>
+
+            </div>
+
+
+            <!-- CONTACT -->
+
+            <div class="col-lg-3">
+
+                <h5>Aloqa</h5>
+
+
+                <p class="footer-contact">
+
+                    <i class="bi bi-telephone"></i>
+
+                    +998 71 200 00 00
+
+                </p>
+
+
+                <p class="footer-contact">
+
+                    <i class="bi bi-envelope"></i>
+
+                    info@novabank.uz
+
+                </p>
+
+
+                <p class="footer-contact">
+
+                    <i class="bi bi-geo-alt"></i>
+
+                    Toshkent, O‘zbekiston
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <hr>
+
+
+        <!-- FOOTER BOTTOM -->
+
+        <div class="footer-bottom">
+
+
+            <span>
+
+                © 2026 NOVA BANK.
+                Demo portfolio project.
+
+            </span>
+
+
+            <div class="footer-social">
+
+
+                <a href="#" aria-label="Telegram">
+
+                    <i class="bi bi-telegram"></i>
+
+                </a>
+
+
+                <a href="#" aria-label="Instagram">
+
+                    <i class="bi bi-instagram"></i>
+
+                </a>
+
+
+                <a href="#" aria-label="Facebook">
+
+                    <i class="bi bi-facebook"></i>
+
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =====================================================
+     BOOTSTRAP JS
+===================================================== -->
+
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+{% block extra_js %}
+{% endblock %}
+
+
+</body>
+
+</html>

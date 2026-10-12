@@ -1,0 +1,654 @@
+{% extends "nova_bank/base.html" %}
+
+{% block title %}Depozit ochish — NOVA BANK{% endblock %}
+
+{% block extra_css %}
+<style>
+    .deposit-page {
+        padding: 45px 0 80px;
+    }
+
+    .page-header {
+        margin-bottom: 30px;
+    }
+
+    .page-header .eyebrow {
+        color: #4ca9ff;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .page-header h1 {
+        font-size: 38px;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .page-header p {
+        color: #8f9bad;
+        margin: 0;
+    }
+
+    .deposit-card {
+        background: linear-gradient(
+            145deg,
+            rgba(18, 25, 38, .98),
+            rgba(9, 14, 23, .98)
+        );
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 25px 70px rgba(0,0,0,.25);
+    }
+
+    .section-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+
+    .form-label {
+        color: #dce5f2;
+        font-weight: 600;
+        margin-bottom: 9px;
+    }
+
+    .form-control,
+    .form-select {
+        background: #0b111c;
+        border: 1px solid rgba(255,255,255,.10);
+        color: #fff;
+        border-radius: 13px;
+        padding: 13px 15px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        background: #0b111c;
+        color: #fff;
+        border-color: #4ca9ff;
+        box-shadow: 0 0 0 3px rgba(76,169,255,.12);
+    }
+
+    .form-select option {
+        background: #0b111c;
+        color: #fff;
+    }
+
+    .deposit-types {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 28px;
+    }
+
+    .type-option {
+        position: relative;
+    }
+
+    .type-option input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .type-label {
+        display: block;
+        background: #0b111c;
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 17px;
+        padding: 20px;
+        cursor: pointer;
+        transition: .25s;
+        height: 100%;
+    }
+
+    .type-label:hover {
+        border-color: rgba(76,169,255,.5);
+        transform: translateY(-2px);
+    }
+
+    .type-option input:checked + .type-label {
+        border-color: #4ca9ff;
+        background: rgba(76,169,255,.08);
+        box-shadow: 0 0 25px rgba(76,169,255,.08);
+    }
+
+    .type-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(76,169,255,.12);
+        color: #4ca9ff;
+        font-size: 21px;
+        margin-bottom: 13px;
+    }
+
+    .type-label h5 {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .type-label p {
+        color: #8f9bad;
+        font-size: 13px;
+        margin: 0 0 10px;
+    }
+
+    .rate {
+        color: #54e38e;
+        font-weight: 800;
+        font-size: 14px;
+    }
+
+    .info-box {
+        margin-top: 25px;
+        padding: 18px;
+        border-radius: 15px;
+        background: rgba(76,169,255,.06);
+        border: 1px solid rgba(76,169,255,.13);
+    }
+
+    .info-box i {
+        color: #4ca9ff;
+        margin-right: 7px;
+    }
+
+    .info-box p {
+        color: #9ca8b8;
+        font-size: 13px;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .side-card {
+        background: linear-gradient(
+            145deg,
+            #101827,
+            #0a101a
+        );
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 24px;
+        padding: 28px;
+        height: 100%;
+    }
+
+    .side-title {
+        font-size: 19px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .calculation {
+        background: #080e17;
+        border-radius: 17px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .calc-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 11px 0;
+        color: #9ca8b8;
+        font-size: 14px;
+        border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+
+    .calc-row:last-child {
+        border-bottom: none;
+    }
+
+    .calc-row strong {
+        color: #fff;
+    }
+
+    .calc-total {
+        margin-top: 8px;
+        padding-top: 17px;
+        border-top: 1px solid rgba(255,255,255,.10);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .calc-total span {
+        color: #9ca8b8;
+    }
+
+    .calc-total strong {
+        color: #54e38e;
+        font-size: 22px;
+    }
+
+    .benefit {
+        display: flex;
+        gap: 13px;
+        margin-bottom: 18px;
+    }
+
+    .benefit-icon {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        border-radius: 11px;
+        background: rgba(84,227,142,.10);
+        color: #54e38e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .benefit h6 {
+        font-weight: 700;
+        margin-bottom: 3px;
+    }
+
+    .benefit p {
+        color: #7f8b9d;
+        font-size: 12px;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .btn-create {
+        width: 100%;
+        border: none;
+        border-radius: 14px;
+        padding: 14px 20px;
+        background: linear-gradient(135deg, #4ca9ff, #347fd4);
+        color: #fff;
+        font-weight: 700;
+        font-size: 15px;
+        transition: .25s;
+    }
+
+    .btn-create:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(76,169,255,.20);
+    }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #9ca8b8;
+        text-decoration: none;
+        margin-top: 18px;
+        font-size: 14px;
+    }
+
+    .btn-back:hover {
+        color: #fff;
+    }
+
+    @media (max-width: 991px) {
+        .deposit-types {
+            grid-template-columns: 1fr;
+        }
+
+        .side-card {
+            margin-top: 25px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .deposit-page {
+            padding: 30px 0 50px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+        }
+
+        .deposit-card,
+        .side-card {
+            padding: 22px;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container deposit-page">
+
+    <div class="page-header">
+        <div class="eyebrow">NOVA SAVINGS</div>
+        <h1>Yangi depozit ochish</h1>
+        <p>Pulingizni saqlang va muddat davomida qo‘shimcha daromad oling.</p>
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- FORM -->
+        <div class="col-lg-8">
+
+            <div class="deposit-card">
+
+                <div class="section-title">
+                    Depozit parametrlarini tanlang
+                </div>
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <label class="form-label">
+                        Depozit turi
+                    </label>
+
+                    <div class="deposit-types">
+
+                        <div class="type-option">
+                            <input
+                                type="radio"
+                                name="deposit_type"
+                                value="standard"
+                                id="standard"
+                                checked
+                            >
+
+                            <label for="standard" class="type-label">
+
+                                <div class="type-icon">
+                                    <i class="bi bi-piggy-bank"></i>
+                                </div>
+
+                                <h5>Standard</h5>
+
+                                <p>
+                                    Oddiy va qulay jamg‘arma.
+                                </p>
+
+                                <span class="rate">
+                                    10% yillik
+                                </span>
+
+                            </label>
+                        </div>
+
+
+                        <div class="type-option">
+                            <input
+                                type="radio"
+                                name="deposit_type"
+                                value="premium"
+                                id="premium"
+                            >
+
+                            <label for="premium" class="type-label">
+
+                                <div class="type-icon">
+                                    <i class="bi bi-stars"></i>
+                                </div>
+
+                                <h5>Premium</h5>
+
+                                <p>
+                                    Yuqori daromadli depozit.
+                                </p>
+
+                                <span class="rate">
+                                    13% yillik
+                                </span>
+
+                            </label>
+                        </div>
+
+
+                        <div class="type-option">
+                            <input
+                                type="radio"
+                                name="deposit_type"
+                                value="flexible"
+                                id="flexible"
+                            >
+
+                            <label for="flexible" class="type-label">
+
+                                <div class="type-icon">
+                                    <i class="bi bi-arrow-repeat"></i>
+                                </div>
+
+                                <h5>Flexible</h5>
+
+                                <p>
+                                    Moslashuvchan jamg‘arma.
+                                </p>
+
+                                <span class="rate">
+                                    8% yillik
+                                </span>
+
+                            </label>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Depozit summasi
+                            </label>
+
+                            <div class="input-group">
+
+                                <input
+                                    type="number"
+                                    name="amount"
+                                    class="form-control"
+                                    placeholder="Masalan: 1000"
+                                    min="1"
+                                    step="0.01"
+                                    required
+                                >
+
+                                <span class="input-group-text bg-dark text-white border-secondary">
+                                    USD
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Depozit muddati
+                            </label>
+
+                            <select
+                                name="term_months"
+                                class="form-select"
+                                required
+                            >
+
+                                <option value="3">
+                                    3 oy
+                                </option>
+
+                                <option value="6">
+                                    6 oy
+                                </option>
+
+                                <option value="12" selected>
+                                    12 oy
+                                </option>
+
+                                <option value="24">
+                                    24 oy
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <p>
+                            <i class="bi bi-info-circle"></i>
+
+                            Foiz stavkalari ushbu demo loyiha uchun
+                            belgilangan. Depozit ochilganda summa
+                            hisobingiz balansidan yechiladi va
+                            operatsiyalar tarixiga qo‘shiladi.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn-create mt-4"
+                    >
+                        <i class="bi bi-shield-check me-2"></i>
+                        Depozit ochish
+                    </button>
+
+
+                    <a
+                        href="{% url 'deposits' %}"
+                        class="btn-back"
+                    >
+                        <i class="bi bi-arrow-left"></i>
+                        Depozitlarga qaytish
+                    </a>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- SIDE -->
+        <div class="col-lg-4">
+
+            <div class="side-card">
+
+                <div class="side-title">
+                    Depozit afzalliklari
+                </div>
+
+
+                <div class="calculation">
+
+                    <div class="calc-row">
+                        <span>Minimal summa</span>
+                        <strong>$1.00</strong>
+                    </div>
+
+                    <div class="calc-row">
+                        <span>Muddat</span>
+                        <strong>3–24 oy</strong>
+                    </div>
+
+                    <div class="calc-row">
+                        <span>Foiz</span>
+                        <strong>8–13%</strong>
+                    </div>
+
+                    <div class="calc-total">
+                        <span>Daromad</span>
+                        <strong>+</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="benefit">
+
+                    <div class="benefit-icon">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </div>
+
+                    <div>
+                        <h6>Qo‘shimcha daromad</h6>
+                        <p>
+                            Depozit muddati davomida
+                            foiz orqali daromad oling.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="benefit">
+
+                    <div class="benefit-icon">
+                        <i class="bi bi-lock"></i>
+                    </div>
+
+                    <div>
+                        <h6>Xavfsiz saqlash</h6>
+                        <p>
+                            Mablag‘ingiz depozit hisobida
+                            alohida saqlanadi.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="benefit">
+
+                    <div class="benefit-icon">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+
+                    <div>
+                        <h6>Avtomatik muddat</h6>
+                        <p>
+                            Depozitning tugash sanasi
+                            avtomatik hisoblanadi.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="benefit">
+
+                    <div class="benefit-icon">
+                        <i class="bi bi-receipt"></i>
+                    </div>
+
+                    <div>
+                        <h6>Transaction tarixi</h6>
+                        <p>
+                            Depozit ochilishi avtomatik ravishda
+                            operatsiyalar tarixiga yoziladi.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

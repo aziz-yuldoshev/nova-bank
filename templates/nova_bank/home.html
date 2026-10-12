@@ -1,0 +1,561 @@
+{% extends "nova_bank/base.html" %}
+
+{% block title %}
+NOVA BANK — Banking Reimagined
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .hero-mini-title {
+        color: #D9B86C;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+
+    .hero-mini-title span {
+        color: #19D98B;
+    }
+
+    .gold-text {
+        color: #D9B86C;
+    }
+
+    .green-text {
+        color: #19D98B;
+    }
+</style>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="container">
+
+        <div class="row align-items-center g-5">
+
+            <div class="col-lg-7">
+
+                <div class="hero-content">
+
+                    <div class="hero-badge">
+                        <i class="bi bi-stars"></i>
+                        NEXT GENERATION BANKING
+                    </div>
+
+                    <h1>
+                        Banking
+                        <span>Reimagined.</span>
+                    </h1>
+
+                    <p class="hero-text">
+                        NOVA BANK — zamonaviy moliyaviy xizmatlarni
+                        sodda, tezkor va xavfsiz tajribaga aylantiradi.
+                        Kundalik banking endi boshqacha.
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-3">
+
+                        <a href="#" class="btn-primary-custom">
+                            Hisob ochish
+                            <i class="bi bi-arrow-up-right"></i>
+                        </a>
+
+                        <a href="#services" class="btn-secondary-custom">
+                            Xizmatlarni ko‘rish
+                            <i class="bi bi-arrow-down"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- BANK CARD -->
+
+            <div class="col-lg-5">
+
+                <div class="bank-card-wrapper">
+
+                    <div class="bank-card">
+
+                        <div class="card-top">
+
+                            <div class="card-logo">
+                                NO<span>VA</span>
+                            </div>
+
+                            <div class="card-type">
+                                PLATINUM
+                            </div>
+
+                        </div>
+
+
+                        <div class="card-chip"></div>
+
+
+                        <div class="card-number">
+                            0000 0000 0000 0000
+                        </div>
+
+
+                        <div class="card-bottom">
+
+                            <div>
+                                <div class="card-label">
+                                    Card holder
+                                </div>
+
+                                <div class="card-value">
+                                    DEMO USER
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <div class="card-label">
+                                    Expires
+                                </div>
+
+                                <div class="card-value">
+                                    12/30
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <div class="card-label">
+                                    Status
+                                </div>
+
+                                <div class="card-value green-text">
+                                    ACTIVE
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     TRUST BAR
+========================= -->
+
+<section class="trust-section">
+
+    <div class="container">
+
+        <div class="row g-4">
+
+            <div class="col-6 col-lg-3">
+                <div class="trust-item">
+                    <div class="trust-number">
+                        24/7
+                    </div>
+
+                    <div class="trust-text">
+                        Digital Banking
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-6 col-lg-3">
+                <div class="trust-item">
+                    <div class="trust-number">
+                        0₽
+                    </div>
+
+                    <div class="trust-text">
+                        Monthly Fee
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-6 col-lg-3">
+                <div class="trust-item">
+                    <div class="trust-number">
+                        99.9%
+                    </div>
+
+                    <div class="trust-text">
+                        Platform Uptime
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-6 col-lg-3">
+                <div class="trust-item">
+                    <div class="trust-number">
+                        1 sec
+                    </div>
+
+                    <div class="trust-text">
+                        Fast Payments
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     SERVICES
+========================= -->
+
+<section class="section" id="services">
+
+    <div class="container">
+
+        <div class="row mb-5">
+
+            <div class="col-lg-7">
+
+                <div class="section-label">
+                    OUR SERVICES
+                </div>
+
+                <h2 class="section-title">
+                    Everything you need.
+                    <span class="green-text">
+                        One place.
+                    </span>
+                </h2>
+
+                <p class="section-text mt-4">
+                    NOVA BANK barcha asosiy moliyaviy xizmatlarni
+                    bitta zamonaviy platformaga birlashtiradi.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+            <!-- CARD -->
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        <i class="bi bi-credit-card-2-front"></i>
+                    </div>
+
+                    <h4>
+                        Smart Cards
+                    </h4>
+
+                    <p>
+                        Zamonaviy virtual va plastik kartalar.
+                        Xarajatlarni nazorat qilish va xavfsiz
+                        to‘lovlar uchun qulay imkoniyatlar.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- TRANSFER -->
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        <i class="bi bi-send"></i>
+                    </div>
+
+                    <h4>
+                        Fast Transfers
+                    </h4>
+
+                    <p>
+                        Pul o‘tkazmalarini tezkor boshqarish,
+                        tranzaksiyalar tarixini ko‘rish va
+                        transferlarni nazorat qilish.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- LOAN -->
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        <i class="bi bi-bank"></i>
+                    </div>
+
+                    <h4>
+                        Smart Loans
+                    </h4>
+
+                    <p>
+                        Kredit mahsulotlari, muddat,
+                        foiz va to‘lov jadvalini qulay
+                        interfeys orqali boshqarish.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- DEPOSIT -->
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        <i class="bi bi-piggy-bank"></i>
+                    </div>
+
+                    <h4>
+                        Deposits
+                    </h4>
+
+                    <p>
+                        Jamg‘armalarni boshqarish,
+                        depozit muddatlari va daromadlarini
+                        kuzatish imkoniyati.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- EXCHANGE -->
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        <i class="bi bi-currency-exchange"></i>
+                    </div>
+
+                    <h4>
+                        Currency Exchange
+                    </h4>
+
+                    <p>
+                        Valyuta kurslarini kuzatish va
+                        demo konvertatsiyalarni amalga
+                        oshirish imkoniyati.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ANALYTICS -->
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </div>
+
+                    <h4>
+                        Financial Insights
+                    </h4>
+
+                    <p>
+                        Daromad va xarajatlarni tahlil qilish,
+                        statistikalarni ko‘rish va moliyaviy
+                        odatlarni kuzatish.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     STATS
+========================= -->
+
+<section class="stats-section">
+
+    <div class="container">
+
+        <div class="row">
+
+
+            <div class="col-6 col-lg-3">
+
+                <div class="stat-box">
+
+                    <div class="stat-number">
+                        50K+
+                    </div>
+
+                    <div class="stat-title">
+                        Demo Users
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-6 col-lg-3">
+
+                <div class="stat-box">
+
+                    <div class="stat-number">
+                        120K+
+                    </div>
+
+                    <div class="stat-title">
+                        Transactions
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-6 col-lg-3">
+
+                <div class="stat-box">
+
+                    <div class="stat-number">
+                        99.9%
+                    </div>
+
+                    <div class="stat-title">
+                        Availability
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-6 col-lg-3">
+
+                <div class="stat-box">
+
+                    <div class="stat-number">
+                        24/7
+                    </div>
+
+                    <div class="stat-title">
+                        Support
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     CTA
+========================= -->
+
+<section class="cta-section">
+
+    <div class="container">
+
+        <div class="cta-box">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-8">
+
+                    <div class="section-label">
+                        NOVA EXPERIENCE
+                    </div>
+
+                    <h2>
+                        Your money.
+                        <span class="green-text">
+                            Your future.
+                        </span>
+                    </h2>
+
+                    <p>
+                        NOVA BANK bilan zamonaviy banking
+                        tajribasini kashf eting.
+                    </p>
+
+                </div>
+
+
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+
+                    <a href="#" class="btn-primary-custom">
+
+                        Boshlash
+
+                        <i class="bi bi-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

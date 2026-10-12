@@ -1,0 +1,541 @@
+{% extends "nova_bank/base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% translate "NOVA BANK — Analytics" %}
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .analytics-page {
+        min-height: calc(100vh - 160px);
+        padding: 55px 0 80px;
+        background:
+            radial-gradient(circle at 10% 15%, rgba(13, 110, 253, .12), transparent 30%),
+            radial-gradient(circle at 90% 80%, rgba(0, 191, 255, .08), transparent 30%),
+            #05070b;
+    }
+
+    .analytics-header {
+        margin-bottom: 35px;
+    }
+
+    .analytics-header h1 {
+        color: white;
+        font-size: 38px;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .analytics-header p {
+        color: #8f9aaa;
+        margin: 0;
+    }
+
+    .analytics-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        padding: 24px;
+        border-radius: 20px;
+        background: rgba(15, 19, 27, .92);
+        border: 1px solid rgba(255,255,255,.08);
+        transition: .25s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(13,110,253,.35);
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 18px;
+        background: rgba(13,110,253,.12);
+        color: #4ca9ff;
+        font-size: 21px;
+    }
+
+    .stat-label {
+        color: #8995a6;
+        font-size: 13px;
+        margin-bottom: 7px;
+    }
+
+    .stat-value {
+        color: white;
+        font-size: 25px;
+        font-weight: 800;
+    }
+
+    .analytics-main {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 22px;
+    }
+
+    .panel {
+        background: rgba(15,19,27,.92);
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 22px;
+        padding: 28px;
+    }
+
+    .panel-title {
+        color: white;
+        font-size: 19px;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+
+    .summary-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 17px 0;
+        border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    .summary-row:last-child {
+        border-bottom: 0;
+    }
+
+    .summary-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .summary-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,255,255,.05);
+        color: #8fa0b5;
+    }
+
+    .summary-name {
+        color: #cbd5e1;
+        font-size: 14px;
+    }
+
+    .summary-number {
+        color: white;
+        font-weight: 700;
+    }
+
+    .income {
+        color: #22c55e;
+    }
+
+    .expense {
+        color: #ef4444;
+    }
+
+    .transfer {
+        color: #4ca9ff;
+    }
+
+    .transaction-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 16px 0;
+        border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    .transaction-item:last-child {
+        border-bottom: none;
+    }
+
+    .transaction-left {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        min-width: 0;
+    }
+
+    .transaction-icon {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(13,110,253,.10);
+        color: #4ca9ff;
+    }
+
+    .transaction-title {
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .transaction-date {
+        color: #697689;
+        font-size: 12px;
+        margin-top: 3px;
+    }
+
+    .transaction-amount {
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .empty-transactions {
+        text-align: center;
+        padding: 45px 10px;
+        color: #687487;
+    }
+
+    .empty-transactions i {
+        display: block;
+        font-size: 40px;
+        margin-bottom: 12px;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 25px;
+        color: #7d8a9c;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .back-link:hover {
+        color: white;
+    }
+
+    @media (max-width: 991px) {
+        .analytics-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .analytics-main {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .analytics-page {
+            padding: 35px 0 55px;
+        }
+
+        .analytics-header h1 {
+            font-size: 30px;
+        }
+
+        .analytics-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .panel {
+            padding: 22px;
+        }
+
+        .transaction-item {
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<section class="analytics-page">
+
+<div class="container">
+
+    <div class="analytics-header">
+
+        <h1>
+            <i class="bi bi-bar-chart-line me-2"></i>
+            {% translate "Analytics" %}
+        </h1>
+
+        <p>
+            {% translate "Hisobingizdagi moliyaviy harakatlar tahlili" %}
+        </p>
+
+    </div>
+
+
+    <div class="analytics-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-arrow-down-left"></i>
+            </div>
+
+            <div class="stat-label">
+                {% translate "Jami daromad" %}
+            </div>
+
+            <div class="stat-value income">
+                ${{ total_income|floatformat:2 }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-arrow-up-right"></i>
+            </div>
+
+            <div class="stat-label">
+                {% translate "Jami xarajat" %}
+            </div>
+
+            <div class="stat-value expense">
+                ${{ total_expenses|floatformat:2 }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-arrow-left-right"></i>
+            </div>
+
+            <div class="stat-label">
+                {% translate "Transferlar" %}
+            </div>
+
+            <div class="stat-value transfer">
+                ${{ total_transfers|floatformat:2 }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-receipt"></i>
+            </div>
+
+            <div class="stat-label">
+                {% translate "Tranzaksiyalar" %}
+            </div>
+
+            <div class="stat-value">
+                {{ transaction_count }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="analytics-main">
+
+        <div class="panel">
+
+            <div class="panel-title">
+                {% translate "Umumiy statistika" %}
+            </div>
+
+
+            <div class="summary-row">
+
+                <div class="summary-left">
+
+                    <div class="summary-icon">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+
+                    <span class="summary-name">
+                        {% translate "Yakunlangan" %}
+                    </span>
+
+                </div>
+
+                <span class="summary-number">
+                    {{ completed_count }}
+                </span>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <div class="summary-left">
+
+                    <div class="summary-icon">
+                        <i class="bi bi-clock"></i>
+                    </div>
+
+                    <span class="summary-name">
+                        {% translate "Kutilmoqda" %}
+                    </span>
+
+                </div>
+
+                <span class="summary-number">
+                    {{ pending_count }}
+                </span>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <div class="summary-left">
+
+                    <div class="summary-icon">
+                        <i class="bi bi-arrow-down-circle"></i>
+                    </div>
+
+                    <span class="summary-name">
+                        {% translate "Daromad" %}
+                    </span>
+
+                </div>
+
+                <span class="summary-number income">
+                    ${{ total_income|floatformat:2 }}
+                </span>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <div class="summary-left">
+
+                    <div class="summary-icon">
+                        <i class="bi bi-arrow-up-circle"></i>
+                    </div>
+
+                    <span class="summary-name">
+                        {% translate "Xarajat" %}
+                    </span>
+
+                </div>
+
+                <span class="summary-number expense">
+                    ${{ total_expenses|floatformat:2 }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="panel-title">
+                {% translate "So‘nggi tranzaksiyalar" %}
+            </div>
+
+
+            {% for transaction in transactions|slice:":8" %}
+
+                <div class="transaction-item">
+
+                    <div class="transaction-left">
+
+                        <div class="transaction-icon">
+
+                            {% if transaction.transaction_type == "income" %}
+                                <i class="bi bi-arrow-down-left"></i>
+
+                            {% elif transaction.transaction_type == "transfer" %}
+                                <i class="bi bi-arrow-left-right"></i>
+
+                            {% else %}
+                                <i class="bi bi-arrow-up-right"></i>
+                            {% endif %}
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="transaction-title">
+                                {{ transaction.title }}
+                            </div>
+
+                            <div class="transaction-date">
+                                {{ transaction.created_at|date:"d.m.Y H:i" }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="transaction-amount
+                        {% if transaction.transaction_type == 'income' %}
+                            income
+                        {% elif transaction.transaction_type == 'transfer' %}
+                            transfer
+                        {% else %}
+                            expense
+                        {% endif %}"
+                    >
+
+                        {% if transaction.transaction_type == "income" %}
+                            +${{ transaction.amount|floatformat:2 }}
+                        {% else %}
+                            -${{ transaction.amount|floatformat:2 }}
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <div class="empty-transactions">
+
+                    <i class="bi bi-bar-chart"></i>
+
+                    {% translate "Hozircha tranzaksiyalar mavjud emas." %}
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <a
+        href="{% url 'dashboard' %}"
+        class="back-link"
+    >
+        <i class="bi bi-arrow-left"></i>
+        {% translate "Dashboardga qaytish" %}
+    </a>
+
+</div>
+
+</section>
+
+{% endblock %}

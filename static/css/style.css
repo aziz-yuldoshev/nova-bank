@@ -1,0 +1,745 @@
+:root {
+    --bg: #07110E;
+    --bg-soft: #0B1F18;
+    --bg-card: #10271F;
+
+    --emerald: #19D98B;
+    --emerald-bright: #42F5A7;
+    --gold: #D9B86C;
+    --gold-light: #F0D99A;
+
+    --white: #F4F7F5;
+    --muted: #91A49B;
+
+    --border: rgba(255, 255, 255, 0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background:
+        radial-gradient(
+            circle at 85% 10%,
+            rgba(25, 217, 139, 0.08),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 10% 80%,
+            rgba(217, 184, 108, 0.06),
+            transparent 25%
+        ),
+        var(--bg);
+
+    color: var(--white);
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    min-height: 100vh;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+    background: rgba(7, 17, 14, 0.92) !important;
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(25, 217, 139, 0.08);
+}
+
+.navbar-brand {
+    color: var(--white) !important;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.logo-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(
+        135deg,
+        var(--emerald),
+        var(--gold)
+    );
+
+    color: #07110E;
+    font-weight: 900;
+
+    box-shadow:
+        0 0 25px rgba(25, 217, 139, 0.2);
+}
+
+.logo-bank {
+    color: var(--emerald);
+}
+
+.navbar .nav-link {
+    color: var(--muted) !important;
+    transition: 0.3s ease;
+    font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+    color: var(--emerald-bright) !important;
+}
+
+.btn-login {
+    border: 1px solid rgba(25, 217, 139, 0.35);
+    color: var(--emerald-bright);
+    border-radius: 12px;
+    padding: 9px 18px;
+    transition: 0.3s ease;
+}
+
+.btn-login:hover {
+    background: rgba(25, 217, 139, 0.1);
+    border-color: var(--emerald);
+    color: var(--white);
+}
+
+.btn-register {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+
+    background: linear-gradient(
+        135deg,
+        var(--emerald),
+        var(--emerald-bright)
+    );
+
+    color: #04100B !important;
+    font-weight: 700;
+
+    box-shadow:
+        0 8px 25px rgba(25, 217, 139, 0.18);
+
+    transition: 0.3s ease;
+}
+
+.btn-register:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 35px rgba(25, 217, 139, 0.28);
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    padding: 110px 0 90px;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+
+    width: 520px;
+    height: 520px;
+
+    top: -220px;
+    right: -150px;
+
+    background: radial-gradient(
+        circle,
+        rgba(25, 217, 139, 0.18),
+        transparent 70%
+    );
+
+    filter: blur(20px);
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    bottom: -250px;
+    left: -150px;
+
+    background: radial-gradient(
+        circle,
+        rgba(217, 184, 108, 0.10),
+        transparent 70%
+    );
+
+    filter: blur(30px);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 14px;
+
+    border-radius: 999px;
+
+    background: rgba(25, 217, 139, 0.07);
+    border: 1px solid rgba(25, 217, 139, 0.2);
+
+    color: var(--emerald-bright);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    margin-bottom: 25px;
+}
+
+.hero-badge i {
+    color: var(--gold);
+}
+
+.hero h1 {
+    font-size: clamp(48px, 7vw, 82px);
+    line-height: 0.98;
+    font-weight: 900;
+    letter-spacing: -3px;
+
+    margin-bottom: 28px;
+}
+
+.hero h1 span {
+    background: linear-gradient(
+        90deg,
+        var(--emerald),
+        var(--gold-light)
+    );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-text {
+    max-width: 620px;
+
+    color: var(--muted);
+
+    font-size: 18px;
+    line-height: 1.8;
+
+    margin-bottom: 35px;
+}
+
+.btn-primary-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    background: linear-gradient(
+        135deg,
+        var(--emerald),
+        var(--emerald-bright)
+    );
+
+    color: #04100B !important;
+
+    padding: 14px 24px;
+
+    border-radius: 14px;
+    border: none;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 15px 40px rgba(25, 217, 139, 0.18);
+
+    transition: 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 20px 50px rgba(25, 217, 139, 0.28);
+}
+
+.btn-secondary-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 13px 23px;
+
+    border-radius: 14px;
+
+    border: 1px solid rgba(217, 184, 108, 0.25);
+
+    color: var(--gold-light);
+
+    background: rgba(217, 184, 108, 0.04);
+
+    font-weight: 700;
+
+    transition: 0.3s ease;
+}
+
+.btn-secondary-custom:hover {
+    color: var(--white);
+    background: rgba(217, 184, 108, 0.09);
+    border-color: var(--gold);
+}
+
+/* =========================
+   BANK CARD
+========================= */
+
+.bank-card-wrapper {
+    position: relative;
+    z-index: 2;
+}
+
+.bank-card {
+    position: relative;
+
+    max-width: 470px;
+    min-height: 285px;
+
+    margin: auto;
+
+    padding: 30px;
+
+    border-radius: 28px;
+
+    background:
+        radial-gradient(
+            circle at 85% 15%,
+            rgba(217, 184, 108, 0.28),
+            transparent 25%
+        ),
+        linear-gradient(
+            135deg,
+            #0B2119,
+            #123D2D 55%,
+            #0B1713
+        );
+
+    border: 1px solid rgba(217, 184, 108, 0.25);
+
+    box-shadow:
+        0 35px 90px rgba(0, 0, 0, 0.45),
+        0 0 70px rgba(25, 217, 139, 0.08);
+
+    overflow: hidden;
+
+    transform: rotate(2deg);
+
+    transition: 0.5s ease;
+}
+
+.bank-card:hover {
+    transform: rotate(0deg) translateY(-8px);
+
+    box-shadow:
+        0 45px 100px rgba(0, 0, 0, 0.5),
+        0 0 80px rgba(25, 217, 139, 0.14);
+}
+
+.bank-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+    height: 260px;
+
+    right: -100px;
+    bottom: -120px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(217, 184, 108, 0.25);
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-logo {
+    color: var(--white);
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.card-logo span {
+    color: var(--emerald);
+}
+
+.card-type {
+    color: var(--gold-light);
+    font-size: 13px;
+    letter-spacing: 2px;
+}
+
+.card-chip {
+    width: 54px;
+    height: 40px;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #D9B86C,
+            #F0D99A,
+            #9D7C3C
+        );
+
+    margin-top: 48px;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+
+.card-number {
+    font-size: 25px;
+    letter-spacing: 4px;
+    font-weight: 600;
+
+    margin-top: 28px;
+
+    color: #F7F4E9;
+}
+
+.card-bottom {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.card-label {
+    color: rgba(244, 247, 245, 0.55);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.card-value {
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+/* =========================
+   TRUST
+========================= */
+
+.trust-section {
+    padding: 35px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.trust-item {
+    text-align: center;
+}
+
+.trust-number {
+    color: var(--emerald-bright);
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.trust-text {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* =========================
+   SERVICES
+========================= */
+
+.section {
+    padding: 100px 0;
+}
+
+.section-label {
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+}
+
+.section-title {
+    font-size: clamp(35px, 5vw, 55px);
+    font-weight: 900;
+    letter-spacing: -2px;
+}
+
+.section-text {
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 650px;
+}
+
+.service-card {
+    height: 100%;
+
+    padding: 30px;
+
+    border-radius: 22px;
+
+    background: linear-gradient(
+        145deg,
+        rgba(16, 39, 31, 0.95),
+        rgba(8, 19, 15, 0.95)
+    );
+
+    border: 1px solid var(--border);
+
+    transition: 0.35s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-7px);
+
+    border-color: rgba(25, 217, 139, 0.35);
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.25),
+        0 0 30px rgba(25, 217, 139, 0.06);
+}
+
+.service-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 17px;
+
+    background: rgba(25, 217, 139, 0.08);
+
+    color: var(--emerald);
+
+    font-size: 25px;
+
+    margin-bottom: 22px;
+}
+
+.service-card:nth-child(even) .service-icon {
+    background: rgba(217, 184, 108, 0.08);
+    color: var(--gold);
+}
+
+.service-card h4 {
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.service-card p {
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+/* =========================
+   NUMBERS
+========================= */
+
+.stats-section {
+    padding: 80px 0;
+
+    background:
+        radial-gradient(
+            circle at 20% 50%,
+            rgba(25, 217, 139, 0.08),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #0A1D16,
+            #07110E
+        );
+
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.stat-box {
+    text-align: center;
+    padding: 25px;
+}
+
+.stat-number {
+    font-size: 42px;
+    font-weight: 900;
+
+    background: linear-gradient(
+        90deg,
+        var(--emerald),
+        var(--gold-light)
+    );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-title {
+    color: var(--muted);
+    margin-top: 7px;
+}
+
+/* =========================
+   CTA
+========================= */
+
+.cta-section {
+    padding: 100px 0;
+}
+
+.cta-box {
+    position: relative;
+    overflow: hidden;
+
+    padding: 70px 50px;
+
+    border-radius: 30px;
+
+    background:
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(217, 184, 108, 0.18),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #103628,
+            #07110E
+        );
+
+    border: 1px solid rgba(25, 217, 139, 0.2);
+}
+
+.cta-box h2 {
+    font-size: clamp(35px, 5vw, 58px);
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.cta-box p {
+    color: var(--muted);
+    max-width: 600px;
+    line-height: 1.8;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    background: #040B08;
+    border-top: 1px solid var(--border);
+}
+
+footer a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+footer a:hover {
+    color: var(--emerald);
+}
+
+.footer-title {
+    color: var(--white);
+    font-weight: 800;
+}
+
+.footer-muted {
+    color: var(--muted);
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+    width: 9px;
+}
+
+::-webkit-scrollbar-track {
+    background: #050B08;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #174B38;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--emerald);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 991px) {
+    .hero {
+        padding-top: 70px;
+    }
+
+    .bank-card-wrapper {
+        margin-top: 60px;
+    }
+
+    .hero h1 {
+        letter-spacing: -2px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero {
+        padding: 60px 0;
+    }
+
+    .bank-card {
+        min-height: 250px;
+        padding: 23px;
+    }
+
+    .card-number {
+        font-size: 19px;
+        letter-spacing: 2px;
+    }
+
+    .section {
+        padding: 70px 0;
+    }
+
+    .cta-box {
+        padding: 45px 25px;
+    }
+}

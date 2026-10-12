@@ -1,0 +1,444 @@
+{% extends "nova_bank/base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% translate "NOVA BANK — Transfer" %}
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .transfer-page {
+        min-height: calc(100vh - 160px);
+        padding: 60px 0 80px;
+        background:
+            radial-gradient(
+                circle at 15% 20%,
+                rgba(0, 119, 255, 0.12),
+                transparent 30%
+            ),
+            radial-gradient(
+                circle at 85% 80%,
+                rgba(0, 212, 255, 0.08),
+                transparent 30%
+            ),
+            #05070b;
+    }
+
+    .transfer-wrapper {
+        max-width: 850px;
+        margin: 0 auto;
+    }
+
+    .transfer-header {
+        margin-bottom: 35px;
+    }
+
+    .transfer-header .icon {
+        width: 62px;
+        height: 62px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 18px;
+        background: linear-gradient(
+            135deg,
+            #0d6efd,
+            #00bfff
+        );
+        color: white;
+        font-size: 27px;
+        margin-bottom: 20px;
+        box-shadow: 0 15px 35px rgba(0, 119, 255, 0.25);
+    }
+
+    .transfer-header h1 {
+        color: white;
+        font-size: 38px;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .transfer-header p {
+        color: #8f9aaa;
+        margin: 0;
+        font-size: 16px;
+    }
+
+    .transfer-card {
+        background: rgba(15, 19, 27, 0.92);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 25px;
+        padding: 35px;
+        box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(15px);
+    }
+
+    .balance-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 22px;
+        margin-bottom: 30px;
+        border-radius: 18px;
+        background: linear-gradient(
+            135deg,
+            rgba(13, 110, 253, 0.15),
+            rgba(0, 191, 255, 0.05)
+        );
+        border: 1px solid rgba(13, 110, 253, 0.2);
+    }
+
+    .balance-label {
+        color: #8f9aaa;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .balance-value {
+        color: white;
+        font-size: 27px;
+        font-weight: 800;
+    }
+
+    .account-number {
+        color: #6ea8fe;
+        font-size: 13px;
+        margin-top: 5px;
+    }
+
+    .balance-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(13, 110, 253, 0.16);
+        color: #4ca9ff;
+        font-size: 22px;
+    }
+
+    .form-group {
+        margin-bottom: 23px;
+    }
+
+    .form-label-custom {
+        color: #dce3ec;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 9px;
+        display: block;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 17px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #64748b;
+        font-size: 18px;
+        pointer-events: none;
+    }
+
+    .form-control-custom {
+        width: 100%;
+        height: 58px;
+        padding: 0 18px 0 50px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        background: #0a0e15;
+        color: white;
+        outline: none;
+        transition: 0.25s ease;
+    }
+
+    .form-control-custom::placeholder {
+        color: #596474;
+    }
+
+    .form-control-custom:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.10);
+        background: #0b1018;
+    }
+
+    textarea.form-control-custom {
+        height: 120px;
+        padding-top: 17px;
+        resize: vertical;
+    }
+
+    .amount-wrapper {
+        position: relative;
+    }
+
+    .currency {
+        position: absolute;
+        right: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6ea8fe;
+        font-weight: 700;
+        pointer-events: none;
+    }
+
+    .amount-input {
+        padding-right: 65px;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .transfer-button {
+        width: 100%;
+        height: 60px;
+        border: none;
+        border-radius: 15px;
+        background: linear-gradient(
+            135deg,
+            #0d6efd,
+            #00bfff
+        );
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+        transition: 0.25s ease;
+        box-shadow: 0 15px 30px rgba(13, 110, 253, 0.20);
+    }
+
+    .transfer-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 20px 40px rgba(13, 110, 253, 0.30);
+    }
+
+    .transfer-info {
+        display: flex;
+        gap: 12px;
+        margin-top: 22px;
+        padding: 15px 17px;
+        border-radius: 14px;
+        background: rgba(255, 193, 7, 0.06);
+        border: 1px solid rgba(255, 193, 7, 0.12);
+        color: #9ca8b8;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .transfer-info i {
+        color: #ffc107;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #7d8a9c;
+        text-decoration: none;
+        font-size: 14px;
+        margin-top: 25px;
+        transition: 0.2s ease;
+    }
+
+    .back-link:hover {
+        color: white;
+    }
+
+    @media (max-width: 576px) {
+
+        .transfer-page {
+            padding: 35px 0 55px;
+        }
+
+        .transfer-card {
+            padding: 22px;
+            border-radius: 20px;
+        }
+
+        .transfer-header h1 {
+            font-size: 30px;
+        }
+
+        .balance-box {
+            padding: 18px;
+        }
+
+        .balance-value {
+            font-size: 22px;
+        }
+    }
+</style>
+
+<section class="transfer-page">
+
+<div class="container">
+
+    <div class="transfer-wrapper">
+
+        <div class="transfer-header">
+
+            <div class="icon">
+                <i class="bi bi-send-fill"></i>
+            </div>
+
+            <h1>{% translate "Pul o'tkazish" %}</h1>
+
+            <p>
+                {% translate "NOVA BANK orqali xavfsiz va tezkor transfer amalga oshiring." %}
+            </p>
+
+        </div>
+
+
+        <div class="transfer-card">
+
+            <div class="balance-box">
+
+                <div>
+
+                    <div class="balance-label">
+                        {% translate "Mavjud balans" %}
+                    </div>
+
+                    <div class="balance-value">
+                        ${{ account.balance|floatformat:2 }}
+                    </div>
+
+                    <div class="account-number">
+                        {{ account.account_number }}
+                    </div>
+
+                </div>
+
+                <div class="balance-icon">
+                    <i class="bi bi-wallet2"></i>
+                </div>
+
+            </div>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="form-group">
+
+                    <label class="form-label-custom">
+                        {% translate "Qabul qiluvchining hisob raqami" %}
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <i class="bi bi-person-vcard input-icon"></i>
+
+                        <input
+                            type="text"
+                            name="account_number"
+                            class="form-control-custom"
+                            placeholder="NOVA00000001"
+                            required
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label-custom">
+                        {% translate "Transfer summasi" %}
+                    </label>
+
+                    <div class="amount-wrapper">
+
+                        <input
+                            type="number"
+                            name="amount"
+                            class="form-control-custom amount-input"
+                            placeholder="0.00"
+                            min="0.01"
+                            step="0.01"
+                            required
+                        >
+
+                        <span class="currency">
+                            USD
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label-custom">
+                        {% translate "Izoh" %}
+                        <span style="color:#687487;">
+                            ({% translate "ixtiyoriy" %})
+                        </span>
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <i class="bi bi-chat-left-text input-icon"></i>
+
+                        <textarea
+                            name="description"
+                            class="form-control-custom"
+                            placeholder="{% translate 'Transfer haqida qisqacha izoh...' %}"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="transfer-button"
+                >
+                    <i class="bi bi-send-fill me-2"></i>
+                    {% translate "Pul yuborish" %}
+                </button>
+
+            </form>
+
+
+            <div class="transfer-info">
+
+                <i class="bi bi-shield-check"></i>
+
+                <div>
+                    {% translate "Transfer amalga oshirilgandan so‘ng mablag‘ jo‘natuvchining hisobidan yechiladi va qabul qiluvchining hisobiga qo‘shiladi." %}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="back-link"
+        >
+            <i class="bi bi-arrow-left"></i>
+            {% translate "Dashboardga qaytish" %}
+        </a>
+
+    </div>
+
+</div>
+
+</section>
+
+{% endblock %}

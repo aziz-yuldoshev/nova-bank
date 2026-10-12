@@ -1,0 +1,454 @@
+{% extends "accounts/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Kreditlar" %} — NOVA BANK{% endblock %}
+{% block content %}
+
+<style>
+    .loan-page {
+        padding: 35px 0 70px;
+    }
+
+    .loan-header {
+        margin-bottom: 30px;
+    }
+
+    .loan-header h1 {
+        font-size: 34px;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .loan-header p {
+        color: #8b98aa;
+        margin: 0;
+    }
+
+    .stat-card {
+        background: linear-gradient(145deg, #111722, #0b1018);
+        border: 1px solid rgba(255,255,255,.07);
+        border-radius: 20px;
+        padding: 24px;
+        height: 100%;
+        box-shadow: 0 15px 40px rgba(0,0,0,.18);
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(13,110,253,.12);
+        color: #4da3ff;
+        font-size: 21px;
+        margin-bottom: 18px;
+    }
+
+    .stat-title {
+        color: #7f8b9c;
+        font-size: 14px;
+        margin-bottom: 7px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+        font-weight: 800;
+        color: #fff;
+    }
+
+    .loan-card {
+        background: linear-gradient(145deg, #121925, #0b1018);
+        border: 1px solid rgba(255,255,255,.07);
+        border-radius: 24px;
+        padding: 28px;
+        margin-top: 25px;
+        transition: .25s ease;
+    }
+
+    .loan-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(77,163,255,.3);
+        box-shadow: 0 20px 45px rgba(0,0,0,.25);
+    }
+
+    .loan-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .loan-type {
+        font-size: 20px;
+        font-weight: 800;
+        color: #fff;
+    }
+
+    .loan-date {
+        color: #738094;
+        font-size: 13px;
+        margin-top: 5px;
+    }
+
+    .status-badge {
+        padding: 8px 14px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 700;
+        background: rgba(13,202,240,.12);
+        color: #55dfff;
+    }
+
+    .loan-main {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+        gap: 20px;
+        padding: 22px 0;
+        border-top: 1px solid rgba(255,255,255,.06);
+        border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    .loan-amount {
+        font-size: 30px;
+        font-weight: 800;
+        color: #fff;
+    }
+
+    .loan-label {
+        color: #738094;
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .loan-value {
+        color: #e9eef5;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+    .progress-section {
+        margin-top: 24px;
+    }
+
+    .progress-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .progress-info span {
+        color: #8995a6;
+        font-size: 13px;
+    }
+
+    .progress-bar-custom {
+        width: 100%;
+        height: 9px;
+        background: #202936;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #0d6efd, #48b8ff);
+        border-radius: 20px;
+    }
+
+    .loan-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 18px;
+    }
+
+    .remaining {
+        color: #8995a6;
+        font-size: 14px;
+    }
+
+    .remaining strong {
+        color: #fff;
+        font-size: 16px;
+    }
+
+    .empty-loans {
+        text-align: center;
+        padding: 80px 20px;
+        background: linear-gradient(145deg, #111722, #0b1018);
+        border: 1px solid rgba(255,255,255,.07);
+        border-radius: 24px;
+        margin-top: 30px;
+    }
+
+    .empty-loans i {
+        font-size: 55px;
+        color: #3f4b5d;
+        margin-bottom: 20px;
+    }
+
+    .empty-loans h3 {
+        color: #fff;
+        font-weight: 800;
+    }
+
+    .empty-loans p {
+        color: #7f8b9c;
+    }
+
+    @media (max-width: 992px) {
+        .loan-main {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .loan-page {
+            padding-top: 20px;
+        }
+
+        .loan-header h1 {
+            font-size: 28px;
+        }
+
+        .loan-card {
+            padding: 20px;
+        }
+
+        .loan-top {
+            align-items: flex-start;
+        }
+
+        .loan-main {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .loan-amount {
+            font-size: 24px;
+        }
+
+        .loan-footer {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+    }
+</style>
+
+
+<div class="container loan-page">
+
+    <!-- HEADER -->
+    <div class="loan-header">
+        <h1>{% trans "Kreditlar" %}</h1>
+        <p>{% trans "Barcha kreditlaringizni bir joyda boshqaring" %}</p>
+    </div>
+
+    <!-- STATISTICS -->
+    <div class="row g-4">
+
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-cash-stack"></i>
+                </div>
+
+                <div class="stat-title">
+                    {% trans "Jami kredit" %}
+                </div>
+
+                <div class="stat-value">
+                    ${{ total_amount|floatformat:2 }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-wallet2"></i>
+                </div>
+
+                <div class="stat-title">
+                    {% trans "Qolgan summa" %}
+                </div>
+
+                <div class="stat-value">
+                    ${{ remaining_amount|floatformat:2 }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-activity"></i>
+                </div>
+
+                <div class="stat-title">
+                    {% trans "Faol kreditlar" %}
+                </div>
+
+                <div class="stat-value">
+                    {{ active_loans }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-hourglass-split"></i>
+                </div>
+
+                <div class="stat-title">
+                    {% trans "Kutilmoqda" %}
+                </div>
+
+                <div class="stat-value">
+                    {{ pending_loans }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- LOANS -->
+
+    {% if loans %}
+
+        {% for loan in loans %}
+
+        <div class="loan-card">
+
+            <div class="loan-top">
+
+                <div>
+                    <div class="loan-type">
+                        {{ loan.get_loan_type_display }}
+                    </div>
+
+                    <div class="loan-date">
+                        {{ loan.created_at|date:"d.m.Y H:i" }}
+                    </div>
+                </div>
+
+                <div class="status-badge">
+                    {{ loan.get_status_display }}
+                </div>
+
+            </div>
+
+            <div class="loan-main">
+
+                <div>
+                    <div class="loan-label">
+                        {% trans "Kredit summasi" %}
+                    </div>
+
+                    <div class="loan-amount">
+                        ${{ loan.amount|floatformat:2 }}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="loan-label">
+                        {% trans "Foiz stavkasi" %}
+                    </div>
+
+                    <div class="loan-value">
+                        {{ loan.interest_rate }}%
+                    </div>
+                </div>
+
+                <div>
+                    <div class="loan-label">
+                        {% trans "Muddat" %}
+                    </div>
+
+                    <div class="loan-value">
+                        {{ loan.term_months }} {% trans "oy" %}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="loan-label">
+                        {% trans "Oylik to‘lov" %}
+                    </div>
+
+                    <div class="loan-value">
+                        ${{ loan.monthly_payment|floatformat:2 }}
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- PROGRESS -->
+
+            <div class="progress-section">
+
+                <div class="progress-info">
+                    <span>
+                        {% trans "To‘lov jarayoni" %}
+                    </span>
+
+                    <span>
+                        {{ loan.progress }}%
+                    </span>
+                </div>
+
+                <div class="progress-bar-custom">
+
+                    <div
+                        class="progress-fill"
+                        style="width: {{ loan.progress }}%;"
+                    ></div>
+
+                </div>
+
+            </div>
+
+            <div class="loan-footer">
+
+                <div class="remaining">
+                    {% trans "To‘langan:" %}
+                    <strong>
+                        ${{ loan.paid_amount|floatformat:2 }}
+                    </strong>
+                </div>
+
+                <div class="remaining">
+                    {% trans "Qolgan:" %}
+                    <strong>
+                        ${{ loan.remaining_amount|floatformat:2 }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-loans">
+
+            <i class="bi bi-bank"></i>
+
+            <h3>{% trans "Hozircha kreditlar yo‘q" %}</h3>
+
+            <p>
+                {% trans "Sizda hali hech qanday kredit mavjud emas." %}
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
+

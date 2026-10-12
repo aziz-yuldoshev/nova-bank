@@ -1,0 +1,124 @@
+{% extends "nova_bank/base.html" %}
+
+{% block title %}
+NOVA BANK — Kirish
+{% endblock %}
+
+{% block content %}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-5">
+
+                <div class="service-card">
+
+                    <div class="text-center mb-4">
+
+                        <div class="service-icon mx-auto">
+                            <i class="bi bi-shield-lock"></i>
+                        </div>
+
+                        <h2 class="mt-3">
+                            NOVA BANK
+                        </h2>
+
+                        <p class="section-text mx-auto">
+                            Hisobingizga xavfsiz kiring.
+                        </p>
+
+                    </div>
+
+
+                    {% if messages %}
+
+                        {% for message in messages %}
+
+                            <div class="alert alert-danger">
+                                {{ message }}
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Username
+                            </label>
+
+                            <input
+                                type="text"
+                                name="username"
+                                class="form-control bg-dark text-white border-secondary"
+                                placeholder="Username"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+                                Parol
+                            </label>
+
+                            <input
+                                type="password"
+                                name="password"
+                                class="form-control bg-dark text-white border-secondary"
+                                placeholder="••••••••"
+                                required
+                            >
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="btn-primary-custom w-100 justify-content-center"
+                        >
+                            Kirish
+                            <i class="bi bi-box-arrow-in-right"></i>
+                        </button>
+
+                    </form>
+
+
+                    <div class="text-center mt-4">
+
+                        <span class="footer-muted">
+                            Hali hisobingiz yo‘qmi?
+                        </span>
+
+                        <a
+                            href="{% url 'register' %}"
+                            class="green-text text-decoration-none fw-bold"
+                        >
+                            Hisob ochish
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,254 @@
+{% extends "nova_bank/base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Bildirishnomalar — NOVA BANK" %}{% endblock %}
+
+{% block content %}
+
+<style>
+    .notification-page {
+        padding: 50px 0;
+        min-height: 75vh;
+    }
+
+    .notification-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        gap: 20px;
+    }
+
+    .notification-title {
+        font-size: 32px;
+        font-weight: 800;
+        margin-bottom: 5px;
+    }
+
+    .notification-subtitle {
+        color: #8d96a5;
+    }
+
+    .notification-card {
+        background: #11151d;
+        border: 1px solid #242b36;
+        border-radius: 18px;
+        padding: 20px;
+        margin-bottom: 15px;
+        transition: 0.25s;
+    }
+
+    .notification-card:hover {
+        border-color: #4ca9ff;
+        transform: translateY(-2px);
+    }
+
+    .notification-card.unread {
+        border-left: 4px solid #4ca9ff;
+        background: #141b25;
+    }
+
+    .notification-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(76, 169, 255, 0.12);
+        color: #4ca9ff;
+        font-size: 22px;
+        flex-shrink: 0;
+    }
+
+    .notification-content {
+        flex: 1;
+    }
+
+    .notification-item-title {
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .notification-message {
+        color: #a8b0bd;
+        margin-bottom: 7px;
+    }
+
+    .notification-time {
+        color: #697383;
+        font-size: 13px;
+    }
+
+    .read-btn {
+        border: 1px solid #303946;
+        color: #aeb7c4;
+        padding: 7px 12px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    .read-btn:hover {
+        color: white;
+        border-color: #4ca9ff;
+    }
+
+    .empty-notifications {
+        text-align: center;
+        padding: 80px 20px;
+        background: #11151d;
+        border: 1px solid #242b36;
+        border-radius: 20px;
+    }
+
+    .empty-notifications i {
+        font-size: 55px;
+        color: #4ca9ff;
+        margin-bottom: 20px;
+    }
+
+    .empty-notifications h4 {
+        font-weight: 700;
+    }
+
+    .empty-notifications p {
+        color: #7e8795;
+    }
+
+    @media (max-width: 768px) {
+        .notification-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .notification-title {
+            font-size: 26px;
+        }
+    }
+</style>
+
+
+<div class="container notification-page">
+
+    <div class="notification-header">
+
+        <div>
+            <div class="notification-title">
+                <i class="bi bi-bell-fill me-2"></i>
+                {% translate "Bildirishnomalar" %}
+            </div>
+
+            <div class="notification-subtitle">
+                {% translate "Hisobingiz bo‘yicha barcha muhim xabarlar" %}
+            </div>
+        </div>
+
+        {% if unread_count > 0 %}
+        <a
+            href="{% url 'mark_all_notifications_read' %}"
+            class="btn btn-outline-light"
+        >
+            <i class="bi bi-check2-all me-1"></i>
+            {% translate "Barchasini o‘qilgan qilish" %}
+        </a>
+        {% endif %}
+
+    </div>
+
+
+    {% if notifications %}
+
+        {% for notification in notifications %}
+
+        <div class="notification-card {% if not notification.is_read %}unread{% endif %}">
+
+            <div class="d-flex align-items-start gap-3">
+
+                <div class="notification-icon">
+
+                    {% if notification.notification_type == "success" %}
+                        <i class="bi bi-check-circle-fill"></i>
+
+                    {% elif notification.notification_type == "warning" %}
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+
+                    {% elif notification.notification_type == "transfer" %}
+                        <i class="bi bi-arrow-left-right"></i>
+
+                    {% elif notification.notification_type == "loan" %}
+                        <i class="bi bi-cash-stack"></i>
+
+                    {% elif notification.notification_type == "deposit" %}
+                        <i class="bi bi-piggy-bank-fill"></i>
+
+                    {% else %}
+                        <i class="bi bi-info-circle-fill"></i>
+                    {% endif %}
+
+                </div>
+
+
+                <div class="notification-content">
+
+                    <div class="notification-item-title">
+                        {{ notification.title }}
+
+                        {% if not notification.is_read %}
+                            <span class="badge bg-primary ms-2">
+                                {% translate "Yangi" %}
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="notification-message">
+                        {{ notification.message }}
+                    </div>
+
+                    <div class="notification-time">
+                        <i class="bi bi-clock me-1"></i>
+                        {{ notification.created_at|date:"d.m.Y H:i" }}
+                    </div>
+
+                </div>
+
+
+                {% if not notification.is_read %}
+
+                <a
+                    href="{% url 'mark_notification_read' notification.pk %}"
+                    class="read-btn"
+                >
+                    <i class="bi bi-check2 me-1"></i>
+                    {% translate "O‘qildi" %}
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-notifications">
+
+            <i class="bi bi-bell-slash"></i>
+
+            <h4>{% translate "Bildirishnomalar yo‘q" %}</h4>
+
+            <p>
+                {% translate "Hozircha sizda yangi bildirishnomalar mavjud emas." %}
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

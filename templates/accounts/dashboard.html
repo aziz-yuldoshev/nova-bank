@@ -1,0 +1,975 @@
+{% extends "nova_bank/base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "NOVA BANK — Dashboard" %}{% endblock %}
+
+{% block extra_css %}
+<style>
+
+    .dashboard-page {
+        min-height: 100vh;
+        padding: 50px 0 80px;
+        background:
+            radial-gradient(
+                circle at 80% 10%,
+                rgba(0, 119, 255, 0.10),
+                transparent 30%
+            ),
+            #05070b;
+    }
+
+    .dashboard-header {
+        margin-bottom: 35px;
+    }
+
+    .dashboard-header h1 {
+        font-size: 36px;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .dashboard-header p {
+        color: #8d96a8;
+        margin: 0;
+        font-size: 16px;
+    }
+
+    .user-name {
+        color: #4ca9ff;
+    }
+
+
+    /* =========================
+       BANK CARD
+    ========================= */
+
+    .bank-card {
+        position: relative;
+        min-height: 250px;
+        padding: 30px;
+        border-radius: 24px;
+        overflow: hidden;
+
+        background:
+            linear-gradient(
+                135deg,
+                #111827,
+                #07111f 60%,
+                #0b3157
+            );
+
+        border: 1px solid rgba(76, 169, 255, 0.25);
+
+        box-shadow:
+            0 20px 50px rgba(0, 0, 0, 0.30);
+    }
+
+    .bank-card::before {
+        content: "";
+
+        position: absolute;
+
+        width: 220px;
+        height: 220px;
+
+        right: -80px;
+        top: -80px;
+
+        border-radius: 50%;
+
+        background: rgba(76, 169, 255, 0.12);
+    }
+
+    .bank-card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        position: relative;
+        z-index: 2;
+    }
+
+    .bank-name {
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
+
+    .chip {
+        width: 48px;
+        height: 34px;
+
+        border-radius: 8px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #d9d9d9,
+                #777
+            );
+    }
+
+    .balance-label {
+        color: #9ba7b8;
+
+        margin-top: 35px;
+        margin-bottom: 5px;
+
+        position: relative;
+        z-index: 2;
+    }
+
+    .balance {
+        font-size: 36px;
+        font-weight: 800;
+
+        position: relative;
+        z-index: 2;
+    }
+
+    .card-bottom {
+        display: flex;
+        justify-content: space-between;
+
+        margin-top: 35px;
+
+        position: relative;
+        z-index: 2;
+    }
+
+    .card-small-label {
+        color: #8d96a8;
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+
+    .card-small-value {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+
+    /* =========================
+       STAT CARDS
+    ========================= */
+
+    .stats-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 20px;
+
+        height: 100%;
+    }
+
+    .stat-card {
+        min-height: 115px;
+
+        padding: 22px;
+
+        border-radius: 18px;
+
+        background: #0c111a;
+
+        border: 1px solid #1b2635;
+    }
+
+    .stat-icon {
+        width: 42px;
+        height: 42px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 12px;
+
+        background: rgba(76, 169, 255, 0.10);
+
+        color: #4ca9ff;
+
+        font-size: 20px;
+
+        margin-bottom: 12px;
+    }
+
+    .stat-title {
+        color: #8d96a8;
+        font-size: 14px;
+    }
+
+    .stat-value {
+        font-size: 23px;
+        font-weight: 800;
+        margin-top: 4px;
+    }
+
+    .income {
+        color: #4ade80;
+    }
+
+    .expense {
+        color: #fb7185;
+    }
+
+
+    /* =========================
+       SECTION TITLE
+    ========================= */
+
+    .section-title {
+        font-size: 22px;
+        font-weight: 800;
+        margin-bottom: 20px;
+    }
+
+
+    /* =========================
+       QUICK ACTIONS
+    ========================= */
+
+    .quick-actions {
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 15px;
+    }
+
+    .quick-action {
+        display: flex;
+        align-items: center;
+
+        gap: 12px;
+
+        padding: 18px;
+
+        border-radius: 16px;
+
+        background: #0c111a;
+
+        border: 1px solid #1b2635;
+
+        color: white;
+
+        text-decoration: none;
+
+        transition: 0.25s ease;
+    }
+
+    .quick-action:hover {
+        transform: translateY(-3px);
+
+        border-color: #4ca9ff;
+
+        color: white;
+
+        box-shadow:
+            0 10px 30px rgba(76, 169, 255, 0.08);
+    }
+
+    .quick-icon {
+        width: 42px;
+        height: 42px;
+
+        min-width: 42px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 12px;
+
+        background: rgba(76, 169, 255, 0.10);
+    }
+
+    .quick-icon i {
+        margin: 0;
+
+        font-size: 21px;
+
+        color: #4ca9ff;
+    }
+
+    .quick-action strong {
+        display: block;
+
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .quick-action span {
+        display: block;
+
+        color: #737d8f;
+
+        font-size: 12px;
+
+        margin-top: 3px;
+    }
+
+    .quick-action > i {
+        font-size: 18px;
+
+        color: #4ca9ff;
+
+        margin-left: auto;
+    }
+
+
+    /* =========================
+       TRANSACTIONS
+    ========================= */
+
+    .transactions-card {
+        background: #0c111a;
+
+        border: 1px solid #1b2635;
+
+        border-radius: 20px;
+
+        overflow: hidden;
+    }
+
+    .transaction {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 20px;
+
+        padding: 20px;
+
+        border-bottom: 1px solid #1b2635;
+    }
+
+    .transaction:last-child {
+        border-bottom: none;
+    }
+
+    .transaction-left {
+        display: flex;
+
+        align-items: center;
+
+        gap: 14px;
+
+        min-width: 0;
+    }
+
+    .transaction-icon {
+        width: 44px;
+        height: 44px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 12px;
+
+        background: rgba(76, 169, 255, 0.10);
+
+        color: #4ca9ff;
+    }
+
+    .transaction-title {
+        font-weight: 600;
+    }
+
+    .transaction-date {
+        color: #737d8f;
+
+        font-size: 13px;
+
+        margin-top: 3px;
+    }
+
+    .transaction-amount {
+        font-weight: 800;
+
+        white-space: nowrap;
+    }
+
+
+    /* =========================
+       EMPTY
+    ========================= */
+
+    .empty-state {
+        text-align: center;
+
+        padding: 45px 20px;
+
+        color: #737d8f;
+    }
+
+    .empty-state i {
+        font-size: 40px;
+
+        margin-bottom: 12px;
+
+        display: block;
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 1200px) {
+
+        .quick-actions {
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+        }
+
+    }
+
+
+    @media (max-width: 991px) {
+
+        .stats-grid {
+            margin-top: 20px;
+        }
+
+        .quick-actions {
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+        }
+
+    }
+
+
+    @media (max-width: 576px) {
+
+        .dashboard-page {
+            padding: 30px 0 60px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 28px;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .quick-actions {
+            grid-template-columns: 1fr;
+        }
+
+        .bank-card {
+            padding: 22px;
+        }
+
+        .balance {
+            font-size: 29px;
+        }
+
+        .transaction {
+            padding: 16px;
+        }
+
+    }
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="dashboard-page">
+
+    <div class="container">
+
+
+        <!-- =========================
+             HEADER
+        ========================= -->
+
+        <div class="dashboard-header">
+
+            <h1>
+                {% translate "Xush kelibsiz," %}
+                <span class="user-name">
+                    {{ user.username }}
+                </span>
+                👋
+            </h1>
+
+            <p>
+                {% translate "NOVA BANK hisobingizni bir joydan boshqaring." %}
+            </p>
+
+        </div>
+
+
+
+        <!-- =========================
+             BALANCE + STATS
+        ========================= -->
+
+        <div class="row g-4 mb-5">
+
+
+            <!-- BANK ACCOUNT -->
+
+            <div class="col-lg-7">
+
+                <div class="bank-card">
+
+                    <div class="bank-card-top">
+
+                        <div class="bank-name">
+
+                            NOVA
+                            <span style="color:#4ca9ff;">
+                                BANK
+                            </span>
+
+                        </div>
+
+                        <div class="chip"></div>
+
+                    </div>
+
+
+                    <div class="balance-label">
+                        {% translate "Joriy balans" %}
+                    </div>
+
+
+                    <div class="balance">
+                        ${{ account.balance|floatformat:2 }}
+                    </div>
+
+
+                    <div class="card-bottom">
+
+
+                        <div>
+
+                            <div class="card-small-label">
+                                {% translate "Hisob raqami" %}
+                            </div>
+
+                            <div class="card-small-value">
+                                {{ account.account_number }}
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="card-small-label">
+                                {% translate "Hisob turi" %}
+                            </div>
+
+                            <div class="card-small-value">
+                                {{ account.get_account_type_display }}
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STATISTICS -->
+
+            <div class="col-lg-5">
+
+                <div class="stats-grid">
+
+
+                    <!-- INCOME -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            <i class="bi bi-arrow-down-left"></i>
+                        </div>
+
+                        <div class="stat-title">
+                            {% translate "Daromad" %}
+                        </div>
+
+                        <div class="stat-value income">
+                            + ${{ income|floatformat:2 }}
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- EXPENSE -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            <i class="bi bi-arrow-up-right"></i>
+                        </div>
+
+                        <div class="stat-title">
+                            {% translate "Xarajat" %}
+                        </div>
+
+                        <div class="stat-value expense">
+                            - ${{ expenses|floatformat:2 }}
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CARDS -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            <i class="bi bi-credit-card"></i>
+                        </div>
+
+                        <div class="stat-title">
+                            {% translate "Kartalar" %}
+                        </div>
+
+                        <div class="stat-value">
+                            {{ cards|length }}
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ANALYTICS -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            <i class="bi bi-bar-chart"></i>
+                        </div>
+
+                        <div class="stat-title">
+                            {% translate "Analytics" %}
+                        </div>
+
+                        <div class="stat-value">
+
+                            <a
+                                href="{% url 'analytics' %}"
+                                style="
+                                    color:#4ca9ff;
+                                    text-decoration:none;
+                                    font-size:16px;
+                                "
+                            >
+                                {% translate "Ko‘rish →" %}
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             QUICK ACTIONS
+        ========================= -->
+
+        <div class="mb-5">
+
+
+            <div class="section-title">
+                {% translate "Tezkor amallar" %}
+            </div>
+
+
+            <div class="quick-actions">
+
+
+                <!-- TRANSFER -->
+
+                <a
+                    href="{% url 'transfer' %}"
+                    class="quick-action"
+                >
+
+                    <div class="quick-icon">
+                        <i class="bi bi-send"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {% translate "Transfer" %}
+                        </strong>
+
+                        <span>
+                            {% translate "Pul yuborish" %}
+                        </span>
+
+                    </div>
+
+                    <i class="bi bi-arrow-right ms-auto"></i>
+
+                </a>
+
+
+
+                <!-- CARDS -->
+
+                <a
+                    href="{% url 'cards' %}"
+                    class="quick-action"
+                >
+
+                    <div class="quick-icon">
+                        <i class="bi bi-credit-card"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {% translate "Kartalar" %}
+                        </strong>
+
+                        <span>
+                            {% translate "Bank kartalaringiz" %}
+                        </span>
+
+                    </div>
+
+                    <i class="bi bi-arrow-right ms-auto"></i>
+
+                </a>
+
+
+
+                <!-- ANALYTICS -->
+
+                <a
+                    href="{% url 'analytics' %}"
+                    class="quick-action"
+                >
+
+                    <div class="quick-icon">
+                        <i class="bi bi-bar-chart"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {% translate "Analytics" %}
+                        </strong>
+
+                        <span>
+                            {% translate "Moliyaviy tahlil" %}
+                        </span>
+
+                    </div>
+
+                    <i class="bi bi-arrow-right ms-auto"></i>
+
+                </a>
+
+
+
+                <!-- LOANS -->
+
+                <a
+                    href="{% url 'loans' %}"
+                    class="quick-action"
+                >
+
+                    <div class="quick-icon">
+                        <i class="bi bi-bank"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {% translate "Kreditlar" %}
+                        </strong>
+
+                        <span>
+                            {% translate "Kreditlaringizni boshqarish" %}
+                        </span>
+
+                    </div>
+
+                    <i class="bi bi-arrow-right ms-auto"></i>
+
+                </a>
+
+
+
+                <!-- CURRENCY EXCHANGE -->
+
+                <a
+                    href="{% url 'currency_exchange' %}"
+                    class="quick-action"
+                >
+
+                    <div class="quick-icon">
+                        <i class="bi bi-currency-exchange"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {% translate "Valyuta ayirboshlash" %}
+                        </strong>
+
+                        <span>
+                            {% translate "Valyutalarni almashtirish" %}
+                        </span>
+
+                    </div>
+
+                    <i class="bi bi-arrow-right ms-auto"></i>
+
+                </a>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             RECENT TRANSACTIONS
+        ========================= -->
+
+        <div>
+
+
+            <div class="section-title">
+                {% translate "So‘nggi tranzaksiyalar" %}
+            </div>
+
+
+            <div class="transactions-card">
+
+
+                {% for transaction in transactions %}
+
+
+                <div class="transaction">
+
+
+                    <div class="transaction-left">
+
+
+                        <div class="transaction-icon">
+
+                            {% if transaction.transaction_type == "income" %}
+
+                                <i class="bi bi-arrow-down-left"></i>
+
+                            {% elif transaction.transaction_type == "expense" %}
+
+                                <i class="bi bi-bag"></i>
+
+                            {% else %}
+
+                                <i class="bi bi-send"></i>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="transaction-title">
+                                {{ transaction.title }}
+                            </div>
+
+                            <div class="transaction-date">
+                                {{ transaction.created_at|date:"d.m.Y H:i" }}
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div
+                        class="
+                            transaction-amount
+
+                            {% if transaction.transaction_type == 'income' %}
+                                income
+                            {% else %}
+                                expense
+                            {% endif %}
+                        "
+                    >
+
+                        {% if transaction.transaction_type == "income" %}
+
+                            + ${{ transaction.amount|floatformat:2 }}
+
+                        {% else %}
+
+                            - ${{ transaction.amount|floatformat:2 }}
+
+                        {% endif %}
+
+                    </div>
+
+
+                </div>
+
+
+                {% empty %}
+
+
+                <div class="empty-state">
+
+                    <i class="bi bi-receipt"></i>
+
+                    <div>
+                        {% translate "Hozircha tranzaksiyalar mavjud emas." %}
+                    </div>
+
+                </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

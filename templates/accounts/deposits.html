@@ -1,0 +1,760 @@
+{% extends "nova_bank/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Depozitlar" %} — NOVA BANK{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    .deposit-page {
+        padding: 45px 0 80px;
+    }
+
+    .deposit-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 42px;
+        border-radius: 28px;
+        margin-bottom: 30px;
+
+        background:
+            radial-gradient(
+                circle at 85% 20%,
+                rgba(76,169,255,.20),
+                transparent 35%
+            ),
+            linear-gradient(
+                135deg,
+                #111a27,
+                #080d15
+            );
+
+        border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .deposit-hero::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        right: -80px;
+        bottom: -100px;
+        border-radius: 50%;
+        border: 1px solid rgba(76,169,255,.15);
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+
+        padding: 8px 14px;
+        margin-bottom: 18px;
+
+        border-radius: 30px;
+
+        background: rgba(76,169,255,.10);
+        border: 1px solid rgba(76,169,255,.20);
+
+        color: #4ca9ff;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: .4px;
+    }
+
+    .hero-badge i {
+        font-size: 14px;
+    }
+
+    .deposit-hero h1 {
+        position: relative;
+        z-index: 2;
+
+        max-width: 650px;
+
+        margin: 0 0 12px;
+
+        font-size: 42px;
+        line-height: 1.15;
+        font-weight: 850;
+        letter-spacing: -.8px;
+    }
+
+    .deposit-hero p {
+        position: relative;
+        z-index: 2;
+
+        max-width: 620px;
+
+        margin: 0;
+
+        color: #8e9aac;
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 38px;
+    }
+
+    .stat-box {
+        padding: 23px;
+        border-radius: 20px;
+
+        background: #0c131d;
+        border: 1px solid rgba(255,255,255,.07);
+
+        transition: .25s ease;
+    }
+
+    .stat-box:hover {
+        transform: translateY(-4px);
+        border-color: rgba(76,169,255,.30);
+    }
+
+    .stat-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-bottom: 20px;
+    }
+
+    .stat-icon {
+        width: 46px;
+        height: 46px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 14px;
+
+        background: rgba(76,169,255,.10);
+        color: #4ca9ff;
+
+        font-size: 20px;
+    }
+
+    .stat-label {
+        color: #7f8a9b;
+        font-size: 13px;
+    }
+
+    .stat-value {
+        font-size: 25px;
+        font-weight: 800;
+        letter-spacing: -.3px;
+    }
+
+    .green {
+        color: #29d88c;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-bottom: 18px;
+    }
+
+    .section-header h2 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 800;
+    }
+
+    .section-header span {
+        color: #687587;
+        font-size: 13px;
+    }
+
+    .deposit-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .deposit-card {
+        position: relative;
+
+        padding: 25px;
+
+        border-radius: 22px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(255,255,255,.025),
+                rgba(255,255,255,.01)
+            ),
+            #0c131d;
+
+        border: 1px solid rgba(255,255,255,.07);
+
+        transition: .25s ease;
+    }
+
+    .deposit-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(76,169,255,.30);
+    }
+
+    .deposit-main {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 20px;
+
+        margin-bottom: 24px;
+    }
+
+    .deposit-title {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .deposit-icon {
+        width: 54px;
+        height: 54px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 16px;
+
+        background: linear-gradient(
+            135deg,
+            rgba(76,169,255,.18),
+            rgba(76,169,255,.05)
+        );
+
+        color: #4ca9ff;
+        font-size: 23px;
+    }
+
+    .deposit-title h3 {
+        margin: 0 0 5px;
+
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    .deposit-title p {
+        margin: 0;
+
+        color: #758194;
+        font-size: 13px;
+    }
+
+    .deposit-status {
+        padding: 7px 13px;
+
+        border-radius: 30px;
+
+        font-size: 11px;
+        font-weight: 750;
+        letter-spacing: .3px;
+    }
+
+    .status-active {
+        color: #2bdb91;
+        background: rgba(43,219,145,.10);
+        border: 1px solid rgba(43,219,145,.15);
+    }
+
+    .status-completed {
+        color: #4ca9ff;
+        background: rgba(76,169,255,.10);
+        border: 1px solid rgba(76,169,255,.15);
+    }
+
+    .status-cancelled {
+        color: #ff7272;
+        background: rgba(255,114,114,.10);
+        border: 1px solid rgba(255,114,114,.15);
+    }
+
+    .deposit-amount {
+        margin-bottom: 23px;
+    }
+
+    .amount-label {
+        display: block;
+
+        margin-bottom: 5px;
+
+        color: #6f7b8c;
+        font-size: 12px;
+    }
+
+    .amount-value {
+        font-size: 31px;
+        font-weight: 850;
+        letter-spacing: -.6px;
+    }
+
+    .deposit-details {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+
+    .detail-item {
+        padding: 15px;
+
+        border-radius: 14px;
+
+        background: rgba(255,255,255,.025);
+    }
+
+    .detail-item span {
+        display: block;
+
+        margin-bottom: 6px;
+
+        color: #697587;
+        font-size: 11px;
+    }
+
+    .detail-item strong {
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .empty-deposit {
+        padding: 65px 25px;
+
+        text-align: center;
+
+        border-radius: 24px;
+
+        background: #0c131d;
+        border: 1px dashed rgba(255,255,255,.10);
+    }
+
+    .empty-icon {
+        width: 74px;
+        height: 74px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0 auto 20px;
+
+        border-radius: 22px;
+
+        background: rgba(76,169,255,.08);
+        color: #4ca9ff;
+
+        font-size: 31px;
+    }
+
+    .empty-deposit h3 {
+        margin-bottom: 8px;
+
+        font-size: 21px;
+        font-weight: 800;
+    }
+
+    .empty-deposit p {
+        margin: 0;
+
+        color: #718095;
+        font-size: 14px;
+    }
+
+    @media (max-width: 1000px) {
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .deposit-details {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 700px) {
+
+        .deposit-page {
+            padding-top: 25px;
+        }
+
+        .deposit-hero {
+            padding: 28px 23px;
+            border-radius: 22px;
+        }
+
+        .deposit-hero h1 {
+            font-size: 30px;
+        }
+
+        .deposit-hero p {
+            font-size: 14px;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .deposit-main {
+            align-items: flex-start;
+        }
+
+        .deposit-title {
+            align-items: flex-start;
+        }
+
+        .deposit-status {
+            white-space: nowrap;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        .deposit-main {
+            flex-direction: column;
+        }
+
+        .deposit-details {
+            grid-template-columns: 1fr;
+        }
+
+        .deposit-card {
+            padding: 20px;
+        }
+
+        .amount-value {
+            font-size: 26px;
+        }
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container deposit-page">
+
+    <!-- HERO -->
+
+    <section class="deposit-hero">
+
+        <div class="hero-badge">
+            <i class="bi bi-shield-lock-fill"></i>
+            NOVA SAVINGS
+        </div>
+
+        <a href="{% url 'deposit_create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-2"></i>
+            {% trans "Yangi depozit ochish" %}
+        </a>
+
+        <h1>
+            {% trans "Kelajagingiz uchun" %}
+            {% trans "bugundan jamg‘aring." %}
+        </h1>
+
+        <p>
+            {% trans "NOVA BANK depozitlari orqali mablag‘laringizni xavfsiz saqlang va jamg‘armangizdan qo‘shimcha daromad olish imkoniyatidan foydalaning." %}
+        </p>
+
+    </section>
+
+
+    <!-- STATISTICS -->
+
+    <section class="stats-grid">
+
+        <div class="stat-box">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    <i class="bi bi-wallet2"></i>
+                </div>
+
+            </div>
+
+            <div class="stat-label">
+                {% trans "Jami depozitlar" %}
+            </div>
+
+            <div class="stat-value">
+                ${{ total_amount|floatformat:2 }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-box">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+
+            </div>
+
+            <div class="stat-label">
+                {% trans "Kutilayotgan daromad" %}
+            </div>
+
+            <div class="stat-value green">
+                ${{ total_profit|floatformat:2 }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-box">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    <i class="bi bi-lock-fill"></i>
+                </div>
+
+            </div>
+
+            <div class="stat-label">
+                {% trans "Aktiv depozitlar" %}
+            </div>
+
+            <div class="stat-value">
+                {{ active_deposits }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-box">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    <i class="bi bi-check2-circle"></i>
+                </div>
+
+            </div>
+
+            <div class="stat-label">
+                {% trans "Yakunlangan depozitlar" %}
+            </div>
+
+            <div class="stat-value">
+                {{ completed_deposits }}
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- DEPOSIT LIST -->
+
+    <div class="section-header">
+
+        <h2>
+            {% trans "Mening depozitlarim" %}
+        </h2>
+
+        <span>
+            {{ deposits|length }} {% trans "ta depozit" %}
+        </span>
+
+    </div>
+
+
+    {% if deposits %}
+
+    <div class="deposit-list">
+
+        {% for deposit in deposits %}
+
+        <article class="deposit-card">
+
+            <div class="deposit-main">
+
+                <div class="deposit-title">
+
+                    <div class="deposit-icon">
+
+                        {% if deposit.deposit_type == "premium" %}
+
+                        <i class="bi bi-gem"></i>
+
+                        {% elif deposit.deposit_type == "flexible" %}
+
+                        <i class="bi bi-arrow-repeat"></i>
+
+                        {% else %}
+
+                        <i class="bi bi-piggy-bank-fill"></i>
+
+                        {% endif %}
+
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            {{ deposit.get_deposit_type_display }}
+                        </h3>
+
+                        <p>
+                            {{ deposit.term_months }} {% trans "oylik depozit" %}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                {% if deposit.status == "active" %}
+
+                <span class="deposit-status status-active">
+                    {% trans "ACTIVE" %}
+                </span>
+
+                {% elif deposit.status == "completed" %}
+
+                <span class="deposit-status status-completed">
+                    {% trans "COMPLETED" %}
+                </span>
+
+                {% else %}
+
+                <span class="deposit-status status-cancelled">
+                    {% trans "CANCELLED" %}
+                </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="deposit-amount">
+
+                <span class="amount-label">
+                    {% trans "Depozit summasi" %}
+                </span>
+
+                <div class="amount-value">
+                    ${{ deposit.amount|floatformat:2 }}
+                </div>
+
+            </div>
+
+
+            <div class="deposit-details">
+
+                <div class="detail-item">
+
+                    <span>
+                        {% trans "Foiz stavkasi" %}
+                    </span>
+
+                    <strong>
+                        {{ deposit.interest_rate }}%
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span>
+                        {% trans "Kutilayotgan foyda" %}
+                    </span>
+
+                    <strong class="green">
+                        ${{ deposit.expected_profit|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span>
+                        {% trans "Yakuniy summa" %}
+                    </span>
+
+                    <strong>
+                        ${{ deposit.total_amount|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span>
+                        {% trans "Tugash sanasi" %}
+                    </span>
+
+                    <strong>
+
+                        {% if deposit.maturity_date %}
+
+                            {{ deposit.maturity_date|date:"d.m.Y" }}
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% else %}
+
+    <div class="empty-deposit">
+
+        <div class="empty-icon">
+            <i class="bi bi-safe2-fill"></i>
+        </div>
+
+        <h3>
+            {% trans "Hozircha depozit mavjud emas" %}
+        </h3>
+
+        <p>
+            {% trans "Yangi depozit ochganingizdan so‘ng u shu yerda ko‘rinadi." %}
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
+
